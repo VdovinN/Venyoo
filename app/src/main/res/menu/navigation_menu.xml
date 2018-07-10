@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/main_group"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/action_leads"
+            android:icon="@drawable/ic_multiple_users"
+            android:title="@string/leads" />
+        <item
+            android:id="@+id/action_chat"
+            android:icon="@drawable/ic_chat"
+            android:title="@string/chat" />
+        <item
+            android:id="@+id/action_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/settings" />
+    </group>
+
+    <group
+        android:id="@+id/exit_group"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/action_exit"
+            android:title="@string/exit" />
+    </group>
+</menu>

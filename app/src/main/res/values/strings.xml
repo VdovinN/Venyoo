@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Venyoo</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="leads">Заявки</string>
+    <string name="chat">Чат</string>
+    <string name="settings">Настройки</string>
+    <string name="close">Close</string>
+    <string name="open">Open</string>
+    <string name="exit">Выход</string>
 </resources>
