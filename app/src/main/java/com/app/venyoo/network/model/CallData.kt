@@ -1,6 +1,7 @@
 package com.app.venyoo.network.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class CallData(
         @SerializedName("call_status")
@@ -17,4 +18,4 @@ data class CallData(
         var waitingForStats: Boolean? = null,
         @SerializedName("oneWayCall")
         var oneWayCall: Boolean? = null
-)
+): Serializable

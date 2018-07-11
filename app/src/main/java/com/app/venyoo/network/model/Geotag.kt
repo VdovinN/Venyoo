@@ -1,6 +1,7 @@
 package com.app.venyoo.network.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 class Geotag(
         @SerializedName("geotag")
@@ -19,4 +20,4 @@ class Geotag(
         var regionCode: String? = null,
         @SerializedName("status")
         var status: String? = null
-)
+) : Serializable

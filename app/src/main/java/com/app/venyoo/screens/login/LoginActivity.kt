@@ -59,8 +59,13 @@ class LoginActivity : BaseActivity(), LoginView {
     override fun getInputPassword(): String = passwordEditText.text.toString()
 
     override fun startMain() {
-        startActivity(Intent(this, MainActivity::class.java))
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
+        finish()
     }
+
+    override fun getRememberState(): Boolean = checkBox.isChecked
 
     override fun error() {
         snackbar(rootView, "Неправильный логин или пароль")

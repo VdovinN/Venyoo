@@ -1,6 +1,7 @@
 package com.app.venyoo.network.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Lead(
         @SerializedName("id")
@@ -55,4 +56,4 @@ data class Lead(
         var socialData: Boolean? = null,
         @SerializedName("room_id")
         var roomId: String? = null
-)
+) : Serializable

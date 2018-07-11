@@ -7,4 +7,8 @@
     <string name="close">Close</string>
     <string name="open">Open</string>
     <string name="exit">Выход</string>
+    <string name="phone">Телефон</string>
+    <string name="mail">Почта</string>
+    <string name="sms">Смс</string>
+    <string name="lead_seen">Заявка просмотрена</string>
 </resources>

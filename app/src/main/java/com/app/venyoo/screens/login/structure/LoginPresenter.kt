@@ -28,6 +28,7 @@ class LoginPresenter(private val api: VenyooApi, private val preferenceHelper: P
                             preferenceHelper.saveToken(it.token)
                             preferenceHelper.saveEmail(getView().getInputEmail())
                             preferenceHelper.savePassword(getView().getInputPassword())
+                            preferenceHelper.saveRememberUser(getView().getRememberState())
                             getView().startMain()
                         }
                     } else if (it.code() == Constants.RESPONSE_UNAUTHORIZED) {
@@ -37,6 +38,21 @@ class LoginPresenter(private val api: VenyooApi, private val preferenceHelper: P
                         { it.printStackTrace() })
     }
 
-    public fun isAuthorized(): Disposable = Observable.just(preferenceHelper.loadToken() != null).filter { it }.subscribe { getView().startMain() }
+    fun isAuthorized(): Disposable = Observable.just(preferenceHelper.loadRememberUser()).filter { it }.flatMap { api.login(preferenceHelper.loadEmail(), preferenceHelper.loadPassword()) }
+            .subscribeOn(rxSchedulers.io())
+            .observeOn(rxSchedulers.androidUI())
+            .subscribe({
+                if (it.code() == Constants.RESPONSE_OK) {
+                    val login = it.body()
+                    login?.let {
+                        preferenceHelper.saveToken(it.token)
+                        getView().startMain()
+                    }
+                } else if (it.code() == Constants.RESPONSE_UNAUTHORIZED) {
+                    getView().error()
+                }
+            },
+                    { it.printStackTrace() })
+
 
 }

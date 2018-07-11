@@ -20,6 +20,13 @@ class DateHelper {
             }
         }
 
-    }
+        fun formatExactDate(date: String): String {
+            val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale("ru"))
+            val formatDate = format.parse(date)
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = formatDate.time
+            return "${calendar[Calendar.HOUR_OF_DAY]}: ${calendar[Calendar.MINUTE]} ${calendar[Calendar.DAY_OF_MONTH]} ${calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale("ru"))}"
+        }
+}
 
 }
