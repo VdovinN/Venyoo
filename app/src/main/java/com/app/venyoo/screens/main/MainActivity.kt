@@ -1,5 +1,6 @@
 package com.app.venyoo.screens.main
 
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -17,12 +18,14 @@ import com.app.venyoo.helper.NavigationPosition
 import com.app.venyoo.helper.PreferenceHelper
 import com.app.venyoo.helper.findNavigationPositionById
 import com.app.venyoo.helper.getTag
+import com.app.venyoo.screens.login.LoginActivity
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.header_layout.view.*
+import org.jetbrains.anko.alert
 import javax.inject.Inject
 
 
@@ -88,14 +91,42 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Navigation
             }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        navPosition = findNavigationPositionById(item.itemId)
-        when (navPosition.position) {
-            0 -> supportActionBar?.title = getString(R.string.leads)
-            1 -> supportActionBar?.title = getString(R.string.chat)
-            2 -> supportActionBar?.title = getString(R.string.settings)
+        return when {
+            item.groupId == R.id.main_group -> {
+                navPosition = findNavigationPositionById(item.itemId)
+                when (navPosition.position) {
+                    0 -> supportActionBar?.title = getString(R.string.leads)
+                    1 -> supportActionBar?.title = getString(R.string.chat)
+                    2 -> supportActionBar?.title = getString(R.string.settings)
+                }
+                drawerLayout.closeDrawer(GravityCompat.START)
+                switchFragment(navPosition)
+            }
+            else -> {
+                exitAlert()
+                true
+            }
         }
-        drawerLayout.closeDrawer(GravityCompat.START)
-        return switchFragment(navPosition)
+    }
+
+    private fun exitAlert() {
+        alert(getString(R.string.do_you_want_to_exit)) {
+            positiveButton(getString(R.string.yes)) { dialog ->
+                preferenceHelper.clearEmail()
+                preferenceHelper.clearPassword()
+                preferenceHelper.clearToken()
+                dialog.dismiss()
+                goToLogin()
+            }
+            negativeButton(getString(R.string.no)) { dialog -> dialog.dismiss() }
+        }.show()
+    }
+
+    private fun goToLogin() {
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
+        finish()
     }
 
     private fun switchFragment(navPosition: NavigationPosition): Boolean {
@@ -128,47 +159,22 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Navigation
         savedInstanceState ?: switchFragment(NavigationPosition.LEADS)
     }
 
-    public fun enableViews(enable: Boolean) {
-
-        // To keep states of ActionBar and ActionBarDrawerToggle synchronized,
-        // when you enable on one, you disable on the other.
-        // And as you may notice, the order for this operation is disable first, then enable - VERY VERY IMPORTANT.
+    fun enableViews(enable: Boolean) {
         if (enable) {
-            //You may not want to open the drawer on swipe from the left in this case
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-            // Remove hamburger
             drawerToggle.isDrawerIndicatorEnabled = false
-            // Show back button
-            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-            // when DrawerToggle is disabled i.e. setDrawerIndicatorEnabled(false), navigation icon
-            // clicks are disabled i.e. the UP button will not work.
-            // We need to add a listener, as in below, so DrawerToggle will forward
-            // click events to this listener.
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
             if (!mToolBarNavigationListenerIsRegistered) {
                 drawerToggle.toolbarNavigationClickListener = View.OnClickListener { onBackPressed() }
-
                 mToolBarNavigationListenerIsRegistered = true
             }
-
         } else {
-            //You must regain the power of swipe for the drawer.
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-
-            // Remove back button
             supportActionBar?.setDisplayHomeAsUpEnabled(false)
-            // Show hamburger
             drawerToggle.isDrawerIndicatorEnabled = true
-            // Remove the/any drawer toggle listener
             drawerToggle.toolbarNavigationClickListener = null
             mToolBarNavigationListenerIsRegistered = false
         }
-
-        // So, one may think "Hmm why not simplify to:
-        // .....
-        // getSupportActionBar().setDisplayHomeAsUpEnabled(enable);
-        // mDrawer.setDrawerIndicatorEnabled(!enable);
-        // ......
-        // To re-iterate, the order in which you enable and disable views IS important #dontSimplify.
     }
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = dispatchingAndroidInjector

@@ -53,7 +53,7 @@ class LeadDetailFragment : Fragment(), LeadDetailView {
     }
 
     override fun displayLeadInfo(lead: Lead) {
-        (activity as MainActivity).supportActionBar?.title = lead.firstLastName
+        (activity as MainActivity).supportActionBar?.title = ""
         leadUserPhoneTextView.text = lead.phone
 
         lead.socialData?.let {

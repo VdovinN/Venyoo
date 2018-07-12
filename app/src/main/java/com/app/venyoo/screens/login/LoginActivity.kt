@@ -46,11 +46,6 @@ class LoginActivity : BaseActivity(), LoginView {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        presenter.isAuthorized()
-    }
-
     override fun getInputEmail(): String = emailEditText.text.toString()
 
     override fun getInputPassword(): String = passwordEditText.text.toString()
@@ -61,8 +56,6 @@ class LoginActivity : BaseActivity(), LoginView {
         startActivity(intent)
         finish()
     }
-
-    override fun getRememberState(): Boolean = checkBox.isChecked
 
     override fun error() {
         snackbar(rootView, "Неправильный логин или пароль")

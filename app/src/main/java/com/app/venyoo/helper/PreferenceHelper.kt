@@ -21,17 +21,23 @@ class PreferenceHelper(context: Context) {
         sharedPreferences[Constants.PASSWORD] = password
     }
 
-    fun saveRememberUser(remember: Boolean) {
-        sharedPreferences[Constants.REMEMBER_USER] = remember
+    fun loadToken(): String = sharedPreferences[Constants.TOKEN] ?: ""
+
+    fun loadEmail(): String = sharedPreferences[Constants.EMAIL] ?: ""
+
+    fun loadPassword(): String = sharedPreferences[Constants.PASSWORD] ?: ""
+
+    fun clearToken() {
+        sharedPreferences.edit { it.remove(Constants.TOKEN) }
     }
 
-    fun loadToken(): String = sharedPreferences[Constants.TOKEN]?:""
+    fun clearEmail() {
+        sharedPreferences.edit { it.remove(Constants.EMAIL) }
+    }
 
-    fun loadEmail(): String = sharedPreferences[Constants.EMAIL]?:""
-
-    fun loadPassword(): String = sharedPreferences[Constants.PASSWORD]?:""
-
-    fun loadRememberUser(): Boolean = sharedPreferences[Constants.REMEMBER_USER] ?: false
+    fun clearPassword() {
+        sharedPreferences.edit { it.remove(Constants.PASSWORD) }
+    }
 
     inline fun SharedPreferences.edit(operation: (SharedPreferences.Editor) -> Unit) {
         val editor = this.edit()

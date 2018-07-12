@@ -16,4 +16,7 @@
     <string name="from_email">Из почты</string>
     <string name="from_crm">Из CRM</string>
     <string name="not_seen">Не просмотрен</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="do_you_want_to_exit">Вы действительно хотите выйти из программы?</string>
 </resources>
