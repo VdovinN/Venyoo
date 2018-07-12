@@ -6,6 +6,7 @@
 
     <color name="generalGray">#808080</color>
     <color name="black">#000000</color>
+    <color name="opacityBlack">#B3000000</color>
     <color name="white">#FFFFFF</color>
     <color name="generalRed">#E03B52</color>
     <color name="linkBlue">#0000EE</color>

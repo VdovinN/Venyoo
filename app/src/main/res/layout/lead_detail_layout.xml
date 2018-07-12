@@ -11,7 +11,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -38,8 +41,7 @@
                         android:id="@+id/leadUserPhoneTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:textStyle="bold" />
+                        android:textColor="@color/black" />
 
                     <TextView
                         android:id="@+id/leadUserCityTextView"
@@ -54,7 +56,7 @@
                 android:id="@+id/leadUserQuestionTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black" />
+                android:textColor="@color/opacityBlack" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -80,33 +82,41 @@
             </RelativeLayout>
 
             <TextView
+                android:id="@+id/leadUserPhoneFieldTitleTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:text="@string/phone" />
 
             <TextView
                 android:id="@+id/leadUserPhoneFieldTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:textColor="@color/linkBlue" />
 
             <View
+                android:id="@+id/leadUserPhoneFieldLineView"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/generalGray" />
 
             <TextView
+                android:id="@+id/leadUserMailTitleTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:text="@string/mail" />
 
             <TextView
                 android:id="@+id/leadUserMailTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:textColor="@color/linkBlue" />
 
             <View
+                android:id="@+id/leadUserMailLineView"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/generalGray" />
@@ -114,12 +124,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:text="@string/sms" />
 
             <TextView
                 android:id="@+id/leadUserSmsTextView"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/opacityBlack" />
 
             <View
                 android:layout_width="match_parent"
@@ -127,6 +140,7 @@
                 android:background="@color/generalGray" />
 
             <TextView
+                android:layout_marginTop="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/lead_seen" />
@@ -135,7 +149,7 @@
                 android:id="@+id/leadUserSeenTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Из CRM" />
+                android:textColor="@color/opacityBlack" />
 
         </LinearLayout>
 

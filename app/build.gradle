@@ -66,5 +66,8 @@ dependencies {
     implementation "org.jetbrains.anko:anko-design:$anko_version"
 
     //CircleImageView
-    implementation "de.hdodenhof:circleimageview:$project.circleImageLibrary"
+    implementation "de.hdodenhof:circleimageview:$project.circleImageVersion"
+
+    //Image
+    implementation "com.squareup.picasso:picasso:$project.picassoVersion"
 }

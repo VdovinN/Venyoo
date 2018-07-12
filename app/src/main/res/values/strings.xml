@@ -11,4 +11,9 @@
     <string name="mail">Почта</string>
     <string name="sms">Смс</string>
     <string name="lead_seen">Заявка просмотрена</string>
+    <string name="not_connected">Не подключены</string>
+    <string name="connected">Подключены</string>
+    <string name="from_email">Из почты</string>
+    <string name="from_crm">Из CRM</string>
+    <string name="not_seen">Не просмотрен</string>
 </resources>

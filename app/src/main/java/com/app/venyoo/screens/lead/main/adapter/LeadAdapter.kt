@@ -8,6 +8,7 @@ import com.app.venyoo.extension.inflate
 import com.app.venyoo.helper.DateHelper
 import com.app.venyoo.network.model.Lead
 import com.jakewharton.rxbinding2.view.RxView
+import com.squareup.picasso.Picasso
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.lead_item_layout.view.*
 
@@ -36,6 +37,10 @@ class LeadAdapter(private var leadList: MutableList<Lead>) : RecyclerView.Adapte
             RxView.clicks(itemView)
                     .map { lead }
                     .subscribe(itemClicked)
+
+            lead.socialData?.let {
+                Picasso.get().load(it.photo).into(itemView.leadUserImageView)
+            }
 
             itemView.leadUserNameTextView.text = lead.firstLastName
             itemView.leadTimeTextView.text = lead.createdAt?.let { DateHelper.formatDate(it) }

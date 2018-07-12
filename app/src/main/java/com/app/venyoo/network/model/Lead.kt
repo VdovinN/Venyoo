@@ -53,7 +53,7 @@ data class Lead(
         @SerializedName("social")
         var social: String? = null,
         @SerializedName("socialData")
-        var socialData: Boolean? = null,
+        var socialData: SocialData? = null,
         @SerializedName("room_id")
         var roomId: String? = null
 ) : Serializable

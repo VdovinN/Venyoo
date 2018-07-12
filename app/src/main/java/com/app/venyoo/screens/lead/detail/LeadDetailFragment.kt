@@ -13,6 +13,7 @@ import com.app.venyoo.network.model.Lead
 import com.app.venyoo.screens.lead.detail.structure.LeadDetailPresenter
 import com.app.venyoo.screens.lead.detail.structure.LeadDetailView
 import com.app.venyoo.screens.main.MainActivity
+import com.squareup.picasso.Picasso
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.lead_detail_layout.*
 import javax.inject.Inject
@@ -46,8 +47,7 @@ class LeadDetailFragment : Fragment(), LeadDetailView {
 
         presenter.lead = arguments?.get(LEAD) as Lead?
 
-        leadUserPhoneFieldTextView.underline()
-        leadUserMailTextView.underline()
+
 
         presenter.takeView(this)
     }
@@ -55,12 +55,43 @@ class LeadDetailFragment : Fragment(), LeadDetailView {
     override fun displayLeadInfo(lead: Lead) {
         (activity as MainActivity).supportActionBar?.title = lead.firstLastName
         leadUserPhoneTextView.text = lead.phone
-        leadUserPhoneFieldTextView.text = lead.phone
+
+        lead.socialData?.let {
+            Picasso.get().load(it.photo).into(leadUserImageView)
+        }
         leadUserCityTextView.text = lead.region
         leadUserQuestionTextView.text = lead.question
         leadUserDateTextView.text = lead.createdAt?.let { DateHelper.formatExactDate(it) }
-        leadUserMailTextView.text = lead.email
-        leadUserSmsTextView.text = if (lead.sms == 0) "Не подключены" else "Подключены"
+        lead.phone?.let {
+            if (it.isEmpty()) {
+                leadUserPhoneFieldTextView.visibility = View.GONE
+                leadUserPhoneFieldTitleTextView.visibility = View.GONE
+                leadUserPhoneFieldLineView.visibility = View.GONE
+            } else {
+                leadUserPhoneFieldTextView.text = lead.phone
+            }
+        }
+        lead.email?.let {
+            if (it.isEmpty()) {
+                leadUserMailTextView.visibility = View.GONE
+                leadUserMailTitleTextView.visibility = View.GONE
+                leadUserMailLineView.visibility = View.GONE
+            } else {
+                leadUserMailTextView.text = it
+            }
+        }
+
+        leadUserSeenTextView.text = when (lead.show) {
+            "email" -> getString(R.string.from_email)
+            "crm" -> getString(R.string.from_crm)
+            else -> getString(R.string.not_seen)
+        }
+
+        leadUserSmsTextView.text = if (lead.sms == 0) getString(R.string.not_connected) else getString(R.string.connected)
+
+        leadUserMailTextView.underline()
+        leadUserPhoneFieldTextView.underline()
+
     }
 
     override fun onDestroyView() {

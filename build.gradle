@@ -19,7 +19,8 @@ buildscript {
     ext.retrofitVersion = '2.3.0'
     ext.gsonVersion = '2.8.2'
     ext.okHttpVersion = '3.9.1'
-    ext.circleImageLibrary = '2.2.0'
+    ext.circleImageVersion = '2.2.0'
+    ext.picassoVersion = '2.71828'
 
     repositories {
         google()
