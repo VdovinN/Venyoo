@@ -14,6 +14,7 @@ import com.app.venyoo.screens.lead.detail.LeadDetailFragment
 import com.app.venyoo.screens.lead.main.adapter.LeadAdapter
 import com.app.venyoo.screens.lead.main.structure.LeadPresenter
 import com.app.venyoo.screens.lead.main.structure.LeadView
+import com.app.venyoo.screens.main.MainActivity
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.lead_layout.*
@@ -40,6 +41,9 @@ class LeadFragment : Fragment(), LeadView {
         leadRecyclerView.layoutManager = LinearLayoutManager(context)
         adapter = LeadAdapter(mutableListOf())
         leadRecyclerView.adapter = adapter
+
+
+        (activity as MainActivity).supportActionBar?.title = getString(R.string.leads)
 
         presenter.takeView(this)
     }

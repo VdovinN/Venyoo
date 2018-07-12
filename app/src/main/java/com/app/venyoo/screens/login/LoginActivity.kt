@@ -2,12 +2,11 @@ package com.app.venyoo.screens.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.SpannableString
-import android.text.style.UnderlineSpan
 import android.view.inputmethod.EditorInfo
 import com.app.venyoo.R
 import com.app.venyoo.base.BaseActivity
 import com.app.venyoo.extension.hideKeyboard
+import com.app.venyoo.extension.underline
 import com.app.venyoo.screens.login.structure.LoginPresenter
 import com.app.venyoo.screens.login.structure.LoginView
 import com.app.venyoo.screens.main.MainActivity
@@ -36,9 +35,7 @@ class LoginActivity : BaseActivity(), LoginView {
     }
 
     private fun setupView() {
-        val content = SpannableString(rememberPasswordTextView.text)
-        content.setSpan(UnderlineSpan(), 0, content.length, 0)
-        rememberPasswordTextView.text = content
+        rememberPasswordTextView.underline()
 
         RxTextView.editorActionEvents(passwordEditText).subscribe {
             if (it.actionId() == EditorInfo.IME_ACTION_DONE) {

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.app.venyoo.R
 import com.app.venyoo.extension.inflate
+import com.app.venyoo.extension.underline
 import com.app.venyoo.helper.DateHelper
 import com.app.venyoo.network.model.Lead
 import com.app.venyoo.screens.lead.detail.structure.LeadDetailPresenter
@@ -45,17 +46,21 @@ class LeadDetailFragment : Fragment(), LeadDetailView {
 
         presenter.lead = arguments?.get(LEAD) as Lead?
 
+        leadUserPhoneFieldTextView.underline()
+        leadUserMailTextView.underline()
+
         presenter.takeView(this)
     }
 
     override fun displayLeadInfo(lead: Lead) {
+        (activity as MainActivity).supportActionBar?.title = lead.firstLastName
         leadUserPhoneTextView.text = lead.phone
         leadUserPhoneFieldTextView.text = lead.phone
         leadUserCityTextView.text = lead.region
         leadUserQuestionTextView.text = lead.question
         leadUserDateTextView.text = lead.createdAt?.let { DateHelper.formatExactDate(it) }
         leadUserMailTextView.text = lead.email
-        leadUserSmsTextView.text = lead.sms.toString()
+        leadUserSmsTextView.text = if (lead.sms == 0) "Не подключены" else "Подключены"
     }
 
     override fun onDestroyView() {
