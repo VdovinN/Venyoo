@@ -9,6 +9,7 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion project.compileSdkVersion
     defaultConfig {
+        vectorDrawables.useSupportLibrary = true
         applicationId "com.app.venyoo"
         minSdkVersion project.minSdkVersion
         targetSdkVersion project.targetSdkVersion
@@ -27,6 +28,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "com.android.support:support-compat:$project.supportVersion"
     implementation "com.android.support:appcompat-v7:$project.supportVersion"
     implementation "com.android.support:design:$project.supportVersion"
     implementation "com.android.support.constraint:constraint-layout:$project.constraintLayoutVersion"

@@ -10,6 +10,7 @@ import com.app.venyoo.extension.inflate
 import com.app.venyoo.extension.underline
 import com.app.venyoo.helper.DateHelper
 import com.app.venyoo.network.model.Lead
+import com.app.venyoo.screens.lead.detail.adapter.LeadDetailSpinnerAdapter
 import com.app.venyoo.screens.lead.detail.structure.LeadDetailPresenter
 import com.app.venyoo.screens.lead.detail.structure.LeadDetailView
 import com.app.venyoo.screens.main.MainActivity
@@ -86,6 +87,21 @@ class LeadDetailFragment : Fragment(), LeadDetailView {
             "crm" -> getString(R.string.from_crm)
             else -> getString(R.string.not_seen)
         }
+
+        val statusPairList = listOf(
+                Pair("new", "Не обработан"),
+                Pair("connect_fail", "Не удалось связаться"),
+                Pair("help_question", "Справочный вопрос"),
+                Pair("spam", "Спам"),
+                Pair("not_interested", "Не заинтересован в услуге"),
+                Pair("deal", "Договорились о встрече"),
+                Pair("processed", "Обработан"),
+                Pair("send_mail", "Отправил письмо"),
+                Pair("got_mail", "Получил ответ на e-mail"),
+                Pair("open", "Открытый лид"),
+                Pair("in_progress", "В обработке"))
+
+        leadUserStatusSpinner.adapter = LeadDetailSpinnerAdapter(context, statusPairList)
 
         leadUserSmsTextView.text = if (lead.sms == 0) getString(R.string.not_connected) else getString(R.string.connected)
 

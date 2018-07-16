@@ -2,6 +2,7 @@ package com.app.venyoo.extension
 
 import android.content.Context
 import android.support.annotation.LayoutRes
+import android.support.v4.widget.TextViewCompat
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
@@ -22,3 +23,5 @@ fun TextView.underline() {
     content.setSpan(UnderlineSpan(), 0, content.length, 0)
     text = content
 }
+
+fun TextView.setAutoscale() = TextViewCompat.setAutoSizeTextTypeWithDefaults(this, TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM)
