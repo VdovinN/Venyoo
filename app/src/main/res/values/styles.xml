@@ -29,4 +29,12 @@
         <item name="actionMenuTextColor">@android:color/white</item>
     </style>
 
+    <style name="LoginTheme" parent="AppTheme">
+        <item name="colorPrimaryDark">@color/grayStatusBarColor</item>
+    </style>
+
+    <style name="MainTheme" parent="AppTheme">
+        <item name="colorPrimaryDark">@color/redStatusBarColor</item>
+    </style>
+
 </resources>

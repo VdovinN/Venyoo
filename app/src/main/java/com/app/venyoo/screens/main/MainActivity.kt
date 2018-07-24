@@ -3,16 +3,17 @@ package com.app.venyoo.screens.main
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.View
 import com.app.venyoo.R
+import com.app.venyoo.base.BaseActivity
 import com.app.venyoo.extension.findFragment
 import com.app.venyoo.helper.NavigationPosition
 import com.app.venyoo.helper.PreferenceHelper
@@ -26,10 +27,11 @@ import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.header_layout.view.*
 import org.jetbrains.anko.alert
+import org.jetbrains.anko.design.snackbar
 import javax.inject.Inject
 
 
-class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : BaseActivity(), HasSupportFragmentInjector, NavigationView.OnNavigationItemSelectedListener {
 
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
@@ -37,9 +39,12 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Navigation
     @Inject
     lateinit var preferenceHelper: PreferenceHelper
 
+    private var doubleBackToExitPressedOnce = false
+
     private var navPosition: NavigationPosition = NavigationPosition.LEADS
 
     private var mToolBarNavigationListenerIsRegistered = false
+
 
     private val drawerToggle: ActionBarDrawerToggle by lazy {
         ActionBarDrawerToggle(this, drawerLayout, toolbar,
@@ -174,6 +179,24 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Navigation
             drawerToggle.isDrawerIndicatorEnabled = true
             drawerToggle.toolbarNavigationClickListener = null
             mToolBarNavigationListenerIsRegistered = false
+        }
+    }
+
+
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount == 0) {
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed()
+                return
+            }
+
+            this.doubleBackToExitPressedOnce = true
+
+            snackbar(container, R.string.exit_hint).duration = 2000
+
+            Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
+        } else {
+            super.onBackPressed()
         }
     }
 

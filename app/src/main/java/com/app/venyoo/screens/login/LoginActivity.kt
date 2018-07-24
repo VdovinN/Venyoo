@@ -2,6 +2,7 @@ package com.app.venyoo.screens.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.inputmethod.EditorInfo
 import com.app.venyoo.R
 import com.app.venyoo.base.BaseActivity
@@ -24,6 +25,8 @@ class LoginActivity : BaseActivity(), LoginView {
     @Inject
     lateinit var presenter: LoginPresenter
 
+    private var doubleBackToExitPressedOnce = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
@@ -32,6 +35,23 @@ class LoginActivity : BaseActivity(), LoginView {
         setupView()
 
         presenter.takeView(this)
+    }
+
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount == 0) {
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed()
+                return
+            }
+
+            this.doubleBackToExitPressedOnce = true
+
+            snackbar(rootView, R.string.exit_hint).duration = 2000
+
+            Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
+        } else {
+            super.onBackPressed()
+        }
     }
 
     private fun setupView() {
@@ -58,7 +78,11 @@ class LoginActivity : BaseActivity(), LoginView {
     }
 
     override fun error() {
-        snackbar(rootView, "Неправильный логин или пароль")
+        snackbar(rootView, getString(R.string.login_error_message))
+    }
+
+    override fun emptyFields() {
+        snackbar(rootView, getString(R.string.empty_fields))
     }
 
     override fun loginButtonClicked(): Observable<Pair<String, String>> =

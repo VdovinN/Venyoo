@@ -14,4 +14,5 @@ interface LoginView : BaseView {
     fun startMain()
 
     fun loginButtonClicked(): Observable<Pair<String, String>>
+    fun emptyFields()
 }

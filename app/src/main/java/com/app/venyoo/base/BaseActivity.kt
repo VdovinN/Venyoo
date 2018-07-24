@@ -26,5 +26,4 @@ open class BaseActivity : AppCompatActivity() {
         }
         return super.dispatchTouchEvent(ev)
     }
-
 }

@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:theme="@style/LoginTheme"
             android:name=".screens.login.LoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
@@ -26,7 +27,7 @@
             android:name=".screens.main.MainActivity"
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/MainTheme" />
     </application>
 
 </manifest>

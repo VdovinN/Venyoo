@@ -19,4 +19,7 @@
     <string name="yes">Да</string>
     <string name="no">Нет</string>
     <string name="do_you_want_to_exit">Вы действительно хотите выйти из программы?</string>
+    <string name="exit_hint">Нажмите кнопку НАЗАД снова, чтобы выйти из приложения</string>
+    <string name="login_error_message">Неправильный логин или пароль</string>
+    <string name="empty_fields">Неправильный логин или пароль</string>
 </resources>

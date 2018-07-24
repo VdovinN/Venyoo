@@ -8,7 +8,9 @@
     <color name="black">#000000</color>
     <color name="opacityBlack">#B3000000</color>
     <color name="white">#FFFFFF</color>
-    <color name="generalRed">#E03B52</color>
+    <color name="generalRed">#F02651</color>
     <color name="linkBlue">#0000EE</color>
     <color name="greenCall">#5CC650</color>
+    <color name="grayStatusBarColor">#BFBFBF</color>
+    <color name="redStatusBarColor">#CC2045</color>
 </resources>

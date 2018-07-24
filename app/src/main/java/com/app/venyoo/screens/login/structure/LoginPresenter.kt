@@ -18,25 +18,32 @@ class LoginPresenter(private val api: VenyooApi, private val preferenceHelper: P
 
     private fun login(): Disposable {
         return getView().loginButtonClicked()
-                .observeOn(rxSchedulers.io())
-                .filter { !it.first.isEmpty() && !it.second.isEmpty() }
-                .flatMap { api.login(it.first, it.second) }
+                .groupBy { !it.first.isEmpty() && !it.second.isEmpty() }
                 .observeOn(rxSchedulers.androidUI())
-                .subscribe({
-                    if (it.code() == Constants.RESPONSE_OK) {
-                        val login = it.body()
-                        login?.let {
-                            preferenceHelper.saveToken(it.token)
-                            preferenceHelper.saveEmail(getView().getInputEmail())
-                            preferenceHelper.savePassword(getView().getInputPassword())
-                            getView().startMain()
-                        }
-                    } else if (it.code() == Constants.RESPONSE_UNAUTHORIZED) {
-                        getView().error()
+                .subscribe {
+                    if (it.key == true) {
+                        apiRequest(getView().getInputEmail(), getView().getInputPassword())
+                    } else {
+                        it.subscribe { getView().emptyFields() }
                     }
-                },
-                        { it.printStackTrace() })
+                }
     }
+
+    private fun apiRequest(email: String, password: String) = api.login(email, password).subscribeOn(rxSchedulers.io()).observeOn(rxSchedulers.androidUI())
+            .subscribe({
+                if (it.code() == Constants.RESPONSE_OK) {
+                    val login = it.body()
+                    login?.let {
+                        preferenceHelper.saveToken(it.token)
+                        preferenceHelper.saveEmail(getView().getInputEmail())
+                        preferenceHelper.savePassword(getView().getInputPassword())
+                        getView().startMain()
+                    }
+                } else if (it.code() == Constants.RESPONSE_UNAUTHORIZED) {
+                    getView().error()
+                }
+            },
+                    { it.printStackTrace() })
 
     private fun isAuthorized(): Disposable = Observable.just(preferenceHelper.loadToken()).filter { !it.isEmpty() }.flatMap { api.login(preferenceHelper.loadEmail(), preferenceHelper.loadPassword()) }
             .subscribeOn(rxSchedulers.io())
