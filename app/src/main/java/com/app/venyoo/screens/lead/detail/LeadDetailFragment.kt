@@ -1,10 +1,12 @@
 package com.app.venyoo.screens.lead.detail
 
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.amulyakhare.textdrawable.TextDrawable
 import com.app.venyoo.R
 import com.app.venyoo.extension.inflate
 import com.app.venyoo.extension.underline
@@ -17,6 +19,7 @@ import com.app.venyoo.screens.main.MainActivity
 import com.squareup.picasso.Picasso
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.lead_detail_layout.*
+import java.util.*
 import javax.inject.Inject
 
 class LeadDetailFragment : Fragment(), LeadDetailView {
@@ -55,11 +58,29 @@ class LeadDetailFragment : Fragment(), LeadDetailView {
 
     override fun displayLeadInfo(lead: Lead) {
         (activity as MainActivity).supportActionBar?.title = ""
-        leadUserPhoneTextView.text = lead.phone
-
-        lead.socialData?.let {
-            Picasso.get().load(it.photo).into(leadUserImageView)
+        when {
+            lead.firstLastName != null -> leadUserTitleTextView.text = lead.firstLastName
+            lead.phone != null -> leadUserTitleTextView.text = lead.phone
+            else -> leadUserTitleTextView.text = lead.email
         }
+
+        if (lead.socialData != null) {
+            lead.socialData?.let {
+                Picasso.get().load(it.photo).into(leadUserImageView)
+            }
+        } else {
+            val title: String = when {
+                lead.firstLastName != null -> lead.firstLastName ?: ""
+                lead.phone != null -> lead.phone ?: ""
+                else -> lead.email ?: ""
+            }
+
+            val rnd = Random()
+            val randomColor = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
+            val textDrawable = TextDrawable.builder().beginConfig().width(60).height(60).endConfig().buildRect(if (title.isNotEmpty()) title[0].toString() else "", randomColor)
+            leadUserImageView.setImageDrawable(textDrawable)
+        }
+
         leadUserCityTextView.text = lead.region
         leadUserQuestionTextView.text = lead.question
         leadUserDateTextView.text = lead.createdAt?.let { DateHelper.formatExactDate(it) }

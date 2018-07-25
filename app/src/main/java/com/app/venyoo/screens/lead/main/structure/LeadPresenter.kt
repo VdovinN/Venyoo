@@ -12,6 +12,7 @@ class LeadPresenter @Inject constructor(private val api: VenyooApi, private val 
         super.onLoad()
         disposables.add(loadLeads())
         disposables.add(click())
+        disposables.add(swipe())
     }
 
     private fun click() = getView().leadClicked().subscribe { getView().openLeadDetail(it) }
@@ -24,4 +25,14 @@ class LeadPresenter @Inject constructor(private val api: VenyooApi, private val 
                         it.data?.let { it1 -> getView().displayLeads(it1) }
                     }
 
+    private fun swipe() = getView().swipeToResfresh()
+            .observeOn(rxSchedulers.io())
+            .flatMap { api.getLeads(preferenceHelper.loadToken()) }
+            .observeOn(rxSchedulers.androidUI())
+            .subscribe {
+                it.data?.let { it1 ->
+                    getView().displayLeads(it1)
+                }
+                getView().setRefreshing(false)
+            }
 }

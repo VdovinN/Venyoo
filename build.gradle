@@ -22,6 +22,7 @@ buildscript {
     ext.circleImageVersion = '2.2.0'
     ext.picassoVersion = '2.71828'
     ext.rxBusVersion = '1.0.2'
+    ext.textDrawableVersion = '1.0.1'
 
     repositories {
         google()

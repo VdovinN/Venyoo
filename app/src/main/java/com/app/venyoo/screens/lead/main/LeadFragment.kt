@@ -52,6 +52,19 @@ class LeadFragment : Fragment(), LeadView {
         adapter.swap(leadList)
     }
 
+    override fun setRefreshing(isRefreshing: Boolean) {
+        refreshLayout.isRefreshing = isRefreshing
+    }
+
+    override fun swipeToResfresh(): Observable<Any> {
+        return Observable.create {
+            refreshLayout.setOnRefreshListener {
+                it.onNext(Any())
+                setRefreshing(false)
+            }
+        }
+    }
+
     override fun leadClicked(): Observable<Lead> = adapter.itemClicked
 
     override fun openLeadDetail(lead: Lead) {

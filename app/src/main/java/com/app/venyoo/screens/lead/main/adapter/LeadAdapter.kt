@@ -1,8 +1,10 @@
 package com.app.venyoo.screens.lead.main.adapter
 
+import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import com.amulyakhare.textdrawable.TextDrawable
 import com.app.venyoo.R
 import com.app.venyoo.extension.inflate
 import com.app.venyoo.helper.DateHelper
@@ -11,6 +13,7 @@ import com.jakewharton.rxbinding2.view.RxView
 import com.squareup.picasso.Picasso
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.lead_item_layout.view.*
+import java.util.*
 
 class LeadAdapter(private var leadList: MutableList<Lead>) : RecyclerView.Adapter<LeadAdapter.ViewHolder>() {
 
@@ -38,8 +41,21 @@ class LeadAdapter(private var leadList: MutableList<Lead>) : RecyclerView.Adapte
                     .map { lead }
                     .subscribe(itemClicked)
 
-            lead.socialData?.let {
-                Picasso.get().load(it.photo).into(itemView.leadUserImageView)
+            if (lead.socialData != null) {
+                lead.socialData?.let {
+                    Picasso.get().load(it.photo).into(itemView.leadUserImageView)
+                }
+            } else {
+                val title: String = when {
+                    lead.firstLastName != null -> lead.firstLastName ?: ""
+                    lead.phone != null -> lead.phone ?: ""
+                    else -> lead.email ?: ""
+                }
+
+                val rnd = Random()
+                val randomColor = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
+                val textDrawable = TextDrawable.builder().beginConfig().width(60).height(60).endConfig().buildRect(if (title.isNotEmpty()) title[0].toString() else "", randomColor)
+                itemView.leadUserImageView.setImageDrawable(textDrawable)
             }
 
             itemView.leadUserNameTextView.text = lead.firstLastName
