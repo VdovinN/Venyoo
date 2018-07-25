@@ -3,14 +3,18 @@ package com.app.venyoo.screens.login
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.support.v7.app.AlertDialog
 import android.view.inputmethod.EditorInfo
 import com.app.venyoo.R
 import com.app.venyoo.base.BaseActivity
 import com.app.venyoo.extension.hideKeyboard
 import com.app.venyoo.extension.underline
+import com.app.venyoo.network.NetworkEvent
 import com.app.venyoo.screens.login.structure.LoginPresenter
 import com.app.venyoo.screens.login.structure.LoginView
 import com.app.venyoo.screens.main.MainActivity
+import com.eightbitlab.rxbus.Bus
+import com.eightbitlab.rxbus.registerInBus
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
 import dagger.android.AndroidInjection
@@ -27,14 +31,42 @@ class LoginActivity : BaseActivity(), LoginView {
 
     private var doubleBackToExitPressedOnce = false
 
+    private var builder: AlertDialog.Builder? = null
+    private var alertDialog: AlertDialog? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        builder = AlertDialog.Builder(this).setMessage("Ошибка! Проверьте интернет-соединение ").setCancelable(false)
+
         setupView()
 
         presenter.takeView(this)
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        Bus.observe<NetworkEvent>()
+                .subscribe {
+                    if (!it.isOnline) {
+                        alertDialog = builder?.show()
+                    } else {
+                        alertDialog?.let {
+                            if (it.isShowing) {
+                                it.dismiss()
+                            }
+                        }
+                    }
+                }
+                .registerInBus(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Bus.unregister(this)
     }
 
     override fun onBackPressed() {

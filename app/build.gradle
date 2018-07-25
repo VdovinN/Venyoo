@@ -72,4 +72,8 @@ dependencies {
 
     //Image
     implementation "com.squareup.picasso:picasso:$project.picassoVersion"
+
+    //RxBus
+    implementation "com.eightbitlab:rxbus:$project.rxBusVersion"
+
 }
