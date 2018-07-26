@@ -94,7 +94,7 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, NavigationView.
 
         Bus.observe<NetworkEvent>()
                 .subscribe {
-                    if (!it.isOnline) {
+                    if (!it.isOnline && window.decorView.isShown) {
                         alertDialog = builder?.show()
                     } else {
                         alertDialog?.let {

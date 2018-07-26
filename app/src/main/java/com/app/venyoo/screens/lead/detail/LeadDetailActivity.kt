@@ -3,11 +3,11 @@ package com.app.venyoo.screens.lead.detail
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.View
 import com.amulyakhare.textdrawable.TextDrawable
 import com.app.venyoo.R
+import com.app.venyoo.base.BaseActivity
 import com.app.venyoo.extension.dpToPx
 import com.app.venyoo.extension.underline
 import com.app.venyoo.helper.DateHelper
@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.lead_detail_layout.*
 import java.util.*
 import javax.inject.Inject
 
-class LeadDetailActivity : AppCompatActivity(), LeadDetailView {
+class LeadDetailActivity : BaseActivity(), LeadDetailView {
 
     @Inject
     lateinit var presenter: LeadDetailPresenter
