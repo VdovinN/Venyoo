@@ -2,62 +2,69 @@ package com.app.venyoo.screens.lead.detail
 
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.view.LayoutInflater
+import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
+import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import com.amulyakhare.textdrawable.TextDrawable
 import com.app.venyoo.R
-import com.app.venyoo.extension.inflate
+import com.app.venyoo.extension.dpToPx
 import com.app.venyoo.extension.underline
 import com.app.venyoo.helper.DateHelper
 import com.app.venyoo.network.model.Lead
 import com.app.venyoo.screens.lead.detail.adapter.LeadDetailSpinnerAdapter
 import com.app.venyoo.screens.lead.detail.structure.LeadDetailPresenter
 import com.app.venyoo.screens.lead.detail.structure.LeadDetailView
-import com.app.venyoo.screens.main.MainActivity
+import com.r0adkll.slidr.Slidr
+import com.r0adkll.slidr.model.SlidrConfig
+import com.r0adkll.slidr.model.SlidrPosition
 import com.squareup.picasso.Picasso
-import dagger.android.support.AndroidSupportInjection
+import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.lead_detail_layout.*
 import java.util.*
 import javax.inject.Inject
 
-class LeadDetailFragment : Fragment(), LeadDetailView {
+class LeadDetailActivity : AppCompatActivity(), LeadDetailView {
 
     @Inject
     lateinit var presenter: LeadDetailPresenter
 
+    private lateinit var mConfig: SlidrConfig
+
     companion object {
-
         const val LEAD: String = "LEAD"
-
-        fun newInstance(lead: Lead): LeadDetailFragment {
-            val fragment = LeadDetailFragment()
-            val args = Bundle()
-            args.putSerializable(LEAD, lead)
-            fragment.arguments = args
-            return fragment
-        }
-
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = container?.inflate(R.layout.lead_detail_layout)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
+        super.onCreate(savedInstanceState)
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right)
+        setContentView(R.layout.lead_detail_layout)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        AndroidSupportInjection.inject(this)
-        super.onViewCreated(view, savedInstanceState)
+        // val primary = ContextCompat.getColor(this, R.color.generalRed)
+        val secondary = ContextCompat.getColor(this, R.color.redStatusBarColor)
 
-        (activity as MainActivity).enableViews(true)
+        mConfig = SlidrConfig.Builder()
+                .primaryColor(secondary)
+                .secondaryColor(secondary)
+                .position(SlidrPosition.LEFT)
+                .velocityThreshold(2400f)
+                .touchSize(32.dpToPx())
+                .build()
 
-        presenter.lead = arguments?.get(LEAD) as Lead?
+        Slidr.attach(this, mConfig)
 
+        setSupportActionBar(toolbar)
+        supportActionBar?.title = ""
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        presenter.lead = intent.getSerializableExtra(LEAD) as Lead?
 
         presenter.takeView(this)
+
     }
 
     override fun displayLeadInfo(lead: Lead) {
-        (activity as MainActivity).supportActionBar?.title = ""
         when {
             lead.firstLastName != null -> leadUserTitleTextView.text = lead.firstLastName
             lead.phone != null -> leadUserTitleTextView.text = lead.phone
@@ -122,7 +129,7 @@ class LeadDetailFragment : Fragment(), LeadDetailView {
                 Pair("open", "Открытый лид"),
                 Pair("in_progress", "В обработке"))
 
-        leadUserStatusSpinner.adapter = LeadDetailSpinnerAdapter(context, statusPairList)
+        leadUserStatusSpinner.adapter = LeadDetailSpinnerAdapter(this, statusPairList)
 
         leadUserSmsTextView.text = if (lead.sms == 0) getString(R.string.not_connected) else getString(R.string.connected)
 
@@ -131,9 +138,18 @@ class LeadDetailFragment : Fragment(), LeadDetailView {
 
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        (activity as MainActivity).enableViews(false)
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            finish()
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left)
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left)
     }
 
 }

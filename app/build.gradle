@@ -76,7 +76,10 @@ dependencies {
     //RxBus
     implementation "com.eightbitlab:rxbus:$project.rxBusVersion"
 
-    //image with first letter text
+    //Image with first letter text
     implementation "com.amulyakhare:com.amulyakhare.textdrawable:$project.textDrawableVersion"
+
+    //transition animation
+    implementation "com.r0adkll:slidableactivity:$project.slidrVersion"
 
 }

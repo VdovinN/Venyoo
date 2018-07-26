@@ -8,11 +8,9 @@ import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import android.support.v4.view.GravityCompat
-import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AlertDialog
 import android.view.MenuItem
-import android.view.View
 import com.app.venyoo.R
 import com.app.venyoo.base.BaseActivity
 import com.app.venyoo.extension.findFragment
@@ -46,8 +44,6 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, NavigationView.
     private var doubleBackToExitPressedOnce = false
 
     private var navPosition: NavigationPosition = NavigationPosition.LEADS
-
-    private var mToolBarNavigationListenerIsRegistered = false
 
     private var builder: AlertDialog.Builder? = null
     private var alertDialog: AlertDialog? = null
@@ -194,25 +190,6 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, NavigationView.
     private fun initFragment(savedInstanceState: Bundle?) {
         savedInstanceState ?: switchFragment(NavigationPosition.LEADS)
     }
-
-    fun enableViews(enable: Boolean) {
-        if (enable) {
-            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-            drawerToggle.isDrawerIndicatorEnabled = false
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            if (!mToolBarNavigationListenerIsRegistered) {
-                drawerToggle.toolbarNavigationClickListener = View.OnClickListener { onBackPressed() }
-                mToolBarNavigationListenerIsRegistered = true
-            }
-        } else {
-            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-            supportActionBar?.setDisplayHomeAsUpEnabled(false)
-            drawerToggle.isDrawerIndicatorEnabled = true
-            drawerToggle.toolbarNavigationClickListener = null
-            mToolBarNavigationListenerIsRegistered = false
-        }
-    }
-
 
     override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount == 0) {

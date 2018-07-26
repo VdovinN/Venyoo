@@ -1,6 +1,6 @@
 package com.app.venyoo.application.dagger
 
-import com.app.venyoo.screens.lead.detail.LeadDetailFragment
+import com.app.venyoo.screens.lead.detail.LeadDetailActivity
 import com.app.venyoo.screens.lead.main.LeadFragment
 import com.app.venyoo.screens.lead.main.dagger.LeadFragmentModule
 import com.app.venyoo.screens.login.LoginActivity
@@ -22,6 +22,6 @@ abstract class BuildersModule {
     abstract fun bindLeadFragment(): LeadFragment
 
     @ContributesAndroidInjector
-    abstract fun bindLeadDetailFragment(): LeadDetailFragment
+    abstract fun bindLeadDetailActivity(): LeadDetailActivity
 
 }

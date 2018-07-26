@@ -14,9 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:theme="@style/LoginTheme"
             android:name=".screens.login.LoginActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/LoginTheme"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,6 +29,10 @@
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
             android:theme="@style/MainTheme" />
+        <activity
+            android:name=".screens.lead.detail.LeadDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/LeadTheme" />
     </application>
 
 </manifest>

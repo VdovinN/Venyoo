@@ -7,10 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.app.venyoo.R
-import com.app.venyoo.extension.inTransaction
 import com.app.venyoo.extension.inflate
+import com.app.venyoo.extension.leadDetail
 import com.app.venyoo.network.model.Lead
-import com.app.venyoo.screens.lead.detail.LeadDetailFragment
 import com.app.venyoo.screens.lead.main.adapter.LeadAdapter
 import com.app.venyoo.screens.lead.main.structure.LeadPresenter
 import com.app.venyoo.screens.lead.main.structure.LeadView
@@ -19,6 +18,7 @@ import dagger.android.support.AndroidSupportInjection
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.lead_layout.*
 import javax.inject.Inject
+
 
 class LeadFragment : Fragment(), LeadView {
 
@@ -68,9 +68,6 @@ class LeadFragment : Fragment(), LeadView {
     override fun leadClicked(): Observable<Lead> = adapter.itemClicked
 
     override fun openLeadDetail(lead: Lead) {
-        fragmentManager?.inTransaction {
-            replace(R.id.container, LeadDetailFragment.newInstance(lead))
-                    .addToBackStack(null)
-        }
+        startActivity(context?.leadDetail(lead))
     }
 }
