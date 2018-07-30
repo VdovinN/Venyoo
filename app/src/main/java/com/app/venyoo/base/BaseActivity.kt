@@ -4,11 +4,7 @@ import android.annotation.SuppressLint
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Build
-import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.view.MotionEvent
-import android.widget.EditText
-import com.app.venyoo.extension.hideKeyboard
 import com.app.venyoo.network.NetworkReceiver
 
 @SuppressLint("Registered")
@@ -23,10 +19,6 @@ open class BaseActivity : AppCompatActivity() {
 
     private val networkReceiver = NetworkReceiver()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onStart() {
         super.onStart()
         registerNetworkBroadcastForNougat()
@@ -37,23 +29,26 @@ open class BaseActivity : AppCompatActivity() {
         unregisterNetworkChanges()
     }
 
-    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+    /*override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+
         val v = currentFocus
 
-        if (v != null &&
-                (ev.action == MotionEvent.ACTION_UP || ev.action == MotionEvent.ACTION_MOVE) &&
-                v is EditText &&
-                !v.javaClass.name.startsWith("android.webkit.")) {
-            val scrcoords = IntArray(2)
-            v.getLocationOnScreen(scrcoords)
-            val x = ev.rawX + v.left - scrcoords[0]
-            val y = ev.rawY + v.top - scrcoords[1]
+         if (v != null &&
+                 (ev.action == MotionEvent.ACTION_UP || ev.action == MotionEvent.ACTION_MOVE) &&
+                 v is EditText &&
+                 !v.javaClass.name.startsWith("android.webkit.")) {
+             val scrcoords = IntArray(2)
+             v.getLocationOnScreen(scrcoords)
+             val x = ev.rawX + v.left - scrcoords[0]
+             val y = ev.rawY + v.top - scrcoords[1]
 
-            if (x < v.left || x > v.right || y < v.top || y > v.bottom)
-                v.hideKeyboard()
-        }
+             if (x < v.left || x > v.right || y < v.top || y > v.bottom) {
+                 v.hideKeyboard()
+                 v.clearFocus()
+             }
+         }
         return super.dispatchTouchEvent(ev)
-    }
+    }*/
 
     private fun registerNetworkBroadcastForNougat() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

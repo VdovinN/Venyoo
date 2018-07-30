@@ -1,6 +1,7 @@
 package com.app.venyoo.network.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class SocialData(
         @SerializedName("first_name")
@@ -21,4 +22,4 @@ data class SocialData(
         var profile: String? = null,
         @SerializedName("network")
         var network: String? = null
-)
+) : Serializable

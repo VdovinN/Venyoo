@@ -5,55 +5,55 @@ import java.io.Serializable
 
 data class Lead(
         @SerializedName("id")
-        var id: Int? = null,
+        val id: Int,
         @SerializedName("is_test")
-        var isTest: Int? = null,
+        val isTest: Int,
         @SerializedName("owner_user_id")
-        var ownerUserId: Int? = null,
+        val ownerUserId: Int,
         @SerializedName("host")
-        var host: String? = null,
+        val host: String,
         @SerializedName("url")
-        var url: String? = null,
+        val url: String,
         @SerializedName("first_last_name")
-        var firstLastName: String? = null,
+        val firstLastName: String,
         @SerializedName("phone")
-        var phone: String? = null,
+        val phone: String,
         @SerializedName("email")
-        var email: String? = null,
+        val email: String,
         @SerializedName("region")
-        var region: String? = null,
+        val region: String,
         @SerializedName("question")
-        var question: String? = null,
+        val question: String,
         @SerializedName("status")
-        var status: String? = null,
+        val status: String,
         @SerializedName("sex")
-        var sex: String? = null,
+        val sex: String,
         @SerializedName("sms")
-        var sms: Int? = null,
+        val sms: Int,
         @SerializedName("created_at")
-        var createdAt: String? = null,
+        val createdAt: String,
         @SerializedName("geotag")
         var geotag: Geotag? = null,
         @SerializedName("is_mobile")
-        var isMobile: Int? = null,
+        val isMobile: Int,
         @SerializedName("callback")
-        var callback: Int? = null,
+        val callback: Int,
         @SerializedName("callData")
         var callData: CallData? = null,
         @SerializedName("coldpopup_trigger")
-        var coldpopupTrigger: Int? = null,
+        val coldpopupTrigger: Int,
         @SerializedName("dynamic_status")
-        var dynamicStatus: Int? = null,
+        val dynamicStatus: Int,
         @SerializedName("show")
-        var show: String? = null,
+        val show: String,
         @SerializedName("show_ts")
-        var showTs: Long? = null,
+        val showTs: Long,
         @SerializedName("hasTransactions")
-        var hasTransactions: Boolean? = null,
+        val hasTransactions: Boolean,
         @SerializedName("social")
-        var social: String? = null,
+        val social: String,
         @SerializedName("socialData")
         var socialData: SocialData? = null,
         @SerializedName("room_id")
-        var roomId: String? = null
+        val roomId: String
 ) : Serializable

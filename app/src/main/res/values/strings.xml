@@ -22,4 +22,8 @@
     <string name="exit_hint">Нажмите кнопку НАЗАД снова, чтобы выйти из приложения</string>
     <string name="login_error_message">Неправильный логин или пароль</string>
     <string name="empty_fields">Неправильный логин или пароль</string>
+    <string name="your_email">Ваш e-mail</string>
+    <string name="your_password">Ваш пароль</string>
+    <string name="remember_password_question">Забыли пароль?</string>
+    <string name="enter">Войти</string>
 </resources>

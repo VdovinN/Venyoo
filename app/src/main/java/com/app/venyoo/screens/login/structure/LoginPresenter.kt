@@ -18,13 +18,14 @@ class LoginPresenter(private val api: VenyooApi, private val preferenceHelper: P
 
     private fun login(): Disposable {
         return getView().loginButtonClicked()
-                .groupBy { !it.first.isEmpty() && !it.second.isEmpty() }
                 .observeOn(rxSchedulers.androidUI())
                 .subscribe {
-                    if (it.key == true) {
-                        apiRequest(getView().getInputEmail(), getView().getInputPassword())
+                    val email = it.first
+                    val password = it.second
+                    if (!email.isEmpty() && !password.isEmpty()) {
+                        apiRequest(email, password)
                     } else {
-                        it.subscribe { getView().emptyFields() }
+                        getView().emptyFields()
                     }
                 }
     }

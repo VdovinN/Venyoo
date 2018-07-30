@@ -46,10 +46,10 @@ class LeadAdapter(private var leadList: MutableList<Lead>) : RecyclerView.Adapte
                     Picasso.get().load(it.photo).into(itemView.leadUserImageView)
                 }
             } else {
-                val title: String = when {
-                    lead.firstLastName != null -> lead.firstLastName ?: ""
-                    lead.phone != null -> lead.phone ?: ""
-                    else -> lead.email ?: ""
+                val title = when {
+                    !lead.firstLastName.isEmpty() -> lead.firstLastName
+                    !lead.phone.isEmpty() -> lead.phone.substring(1)
+                    else -> lead.email
                 }
 
                 val rnd = Random()
