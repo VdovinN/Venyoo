@@ -4,16 +4,22 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
-import com.eightbitlab.rxbus.Bus
+import android.support.v7.app.AlertDialog
+import com.app.venyoo.R
 
 class NetworkReceiver : BroadcastReceiver() {
 
+    private var alertDialog: AlertDialog? = null
 
-    override fun onReceive(context: Context?, intent: Intent?) {
-        if (isOnline(context)) {
-            Bus.send(NetworkEvent(true))
+    override fun onReceive(context: Context, intent: Intent?) {
+
+        if (alertDialog == null) {
+            alertDialog = AlertDialog.Builder(context).setMessage(context.getString(R.string.network_problems)).setCancelable(false).create()
+        }
+        if (!isOnline(context)) {
+            alertDialog?.show()
         } else {
-            Bus.send(NetworkEvent(false))
+            alertDialog?.dismiss()
         }
     }
 

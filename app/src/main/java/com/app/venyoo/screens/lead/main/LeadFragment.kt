@@ -2,6 +2,7 @@ package com.app.venyoo.screens.lead.main
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -44,6 +45,11 @@ class LeadFragment : Fragment(), LeadView {
 
 
         (activity as MainActivity).supportActionBar?.title = getString(R.string.leads)
+
+        context?.let {
+            refreshLayout.setColorSchemeColors(ContextCompat.getColor(it, R.color.generalRed))
+        }
+
 
         presenter.takeView(this)
     }

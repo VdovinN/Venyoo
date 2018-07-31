@@ -1,6 +1,7 @@
 package com.app.venyoo.screens.lead.detail
 
-import android.graphics.Color
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.view.MenuItem
@@ -9,19 +10,20 @@ import com.amulyakhare.textdrawable.TextDrawable
 import com.app.venyoo.R
 import com.app.venyoo.base.BaseActivity
 import com.app.venyoo.extension.dpToPx
+import com.app.venyoo.extension.intToRGB
 import com.app.venyoo.extension.underline
 import com.app.venyoo.helper.DateHelper
 import com.app.venyoo.network.model.Lead
 import com.app.venyoo.screens.lead.detail.adapter.LeadDetailSpinnerAdapter
 import com.app.venyoo.screens.lead.detail.structure.LeadDetailPresenter
 import com.app.venyoo.screens.lead.detail.structure.LeadDetailView
+import com.jakewharton.rxbinding2.view.RxView
 import com.r0adkll.slidr.Slidr
 import com.r0adkll.slidr.model.SlidrConfig
 import com.r0adkll.slidr.model.SlidrPosition
 import com.squareup.picasso.Picasso
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.lead_detail_layout.*
-import java.util.*
 import javax.inject.Inject
 
 class LeadDetailActivity : BaseActivity(), LeadDetailView {
@@ -41,7 +43,6 @@ class LeadDetailActivity : BaseActivity(), LeadDetailView {
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right)
         setContentView(R.layout.lead_detail_layout)
 
-        // val primary = ContextCompat.getColor(this, R.color.generalRed)
         val secondary = ContextCompat.getColor(this, R.color.redStatusBarColor)
 
         mConfig = SlidrConfig.Builder()
@@ -66,8 +67,8 @@ class LeadDetailActivity : BaseActivity(), LeadDetailView {
 
     override fun displayLeadInfo(lead: Lead) {
         when {
-            lead.firstLastName != null -> leadUserTitleTextView.text = lead.firstLastName
-            lead.phone != null -> leadUserTitleTextView.text = lead.phone
+            !lead.firstLastName.isEmpty() -> leadUserTitleTextView.text = lead.firstLastName
+            !lead.phone.isEmpty() -> leadUserTitleTextView.text = lead.phone
             else -> leadUserTitleTextView.text = lead.email
         }
 
@@ -76,38 +77,37 @@ class LeadDetailActivity : BaseActivity(), LeadDetailView {
                 Picasso.get().load(it.photo).into(leadUserImageView)
             }
         } else {
-            val title: String = when {
-                lead.firstLastName != null -> lead.firstLastName ?: ""
-                lead.phone != null -> lead.phone ?: ""
-                else -> lead.email ?: ""
+            val title = when {
+                !lead.firstLastName.isEmpty() -> lead.firstLastName
+                !lead.phone.isEmpty() -> lead.phone.substring(1)
+                else -> lead.email
             }
 
-            val rnd = Random()
-            val randomColor = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
-            val textDrawable = TextDrawable.builder().beginConfig().width(60).height(60).endConfig().buildRect(if (title.isNotEmpty()) title[0].toString() else "", randomColor)
+            val result = if (title.isNotEmpty()) title[0].toString() else ""
+
+            val textDrawable = TextDrawable.builder().beginConfig().width(60).height(60).endConfig().buildRect(result, title.hashCode().intToRGB())
             leadUserImageView.setImageDrawable(textDrawable)
         }
 
         leadUserCityTextView.text = lead.region
         leadUserQuestionTextView.text = lead.question
-        leadUserDateTextView.text = lead.createdAt?.let { DateHelper.formatExactDate(it) }
-        lead.phone?.let {
-            if (it.isEmpty()) {
-                leadUserPhoneFieldTextView.visibility = View.GONE
-                leadUserPhoneFieldTitleTextView.visibility = View.GONE
-                leadUserPhoneFieldLineView.visibility = View.GONE
-            } else {
-                leadUserPhoneFieldTextView.text = lead.phone
-            }
+        leadUserDateTextView.text = lead.createdAt.let { DateHelper.formatExactDate(it) }
+
+        if (lead.phone.isEmpty()) {
+            leadUserPhoneFieldTextView.visibility = View.GONE
+            leadUserPhoneFieldTitleTextView.visibility = View.GONE
+            leadUserPhoneFieldLineView.visibility = View.GONE
+            callButton.visibility = View.GONE
+        } else {
+            leadUserPhoneFieldTextView.text = lead.phone
         }
-        lead.email?.let {
-            if (it.isEmpty()) {
-                leadUserMailTextView.visibility = View.GONE
-                leadUserMailTitleTextView.visibility = View.GONE
-                leadUserMailLineView.visibility = View.GONE
-            } else {
-                leadUserMailTextView.text = it
-            }
+
+        if (lead.email.isEmpty()) {
+            leadUserMailTextView.visibility = View.GONE
+            leadUserMailTitleTextView.visibility = View.GONE
+            leadUserMailLineView.visibility = View.GONE
+        } else {
+            leadUserMailTextView.text = lead.email
         }
 
         leadUserSeenTextView.text = when (lead.show) {
@@ -136,6 +136,13 @@ class LeadDetailActivity : BaseActivity(), LeadDetailView {
         leadUserMailTextView.underline()
         leadUserPhoneFieldTextView.underline()
 
+    }
+
+    override fun callButtonClicked() = RxView.clicks(callButton)
+
+    override fun call(number: String) {
+        val callIntent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", number, null))
+        startActivity(callIntent)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

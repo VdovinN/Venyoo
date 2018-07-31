@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AlertDialog
 import android.view.MenuItem
 import com.app.venyoo.R
 import com.app.venyoo.base.BaseActivity
@@ -18,10 +17,7 @@ import com.app.venyoo.helper.NavigationPosition
 import com.app.venyoo.helper.PreferenceHelper
 import com.app.venyoo.helper.findNavigationPositionById
 import com.app.venyoo.helper.getTag
-import com.app.venyoo.network.NetworkEvent
 import com.app.venyoo.screens.login.LoginActivity
-import com.eightbitlab.rxbus.Bus
-import com.eightbitlab.rxbus.registerInBus
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -45,20 +41,16 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, NavigationView.
 
     private var navPosition: NavigationPosition = NavigationPosition.LEADS
 
-    private var builder: AlertDialog.Builder? = null
-    private var alertDialog: AlertDialog? = null
-
     private val drawerToggle: ActionBarDrawerToggle by lazy {
         ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.open, R.string.close)
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        builder = AlertDialog.Builder(this).setMessage("Ошибка! Проверьте интернет-соединение ").setCancelable(false)
 
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -87,29 +79,6 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, NavigationView.
     override fun onConfigurationChanged(newConfig: Configuration?) {
         super.onConfigurationChanged(newConfig)
         drawerToggle.onConfigurationChanged(newConfig)
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-        Bus.observe<NetworkEvent>()
-                .subscribe {
-                    if (!it.isOnline && window.decorView.isShown) {
-                        alertDialog = builder?.show()
-                    } else {
-                        alertDialog?.let {
-                            if (it.isShowing) {
-                                it.dismiss()
-                            }
-                        }
-                    }
-                }
-                .registerInBus(this)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Bus.unregister(this)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean =

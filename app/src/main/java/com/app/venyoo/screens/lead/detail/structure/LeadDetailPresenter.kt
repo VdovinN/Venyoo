@@ -10,7 +10,12 @@ class LeadDetailPresenter @Inject constructor() : BasePresenter<LeadDetailView>(
 
     override fun onLoad() {
         super.onLoad()
-        lead?.let { getView().displayLeadInfo(it) }
+        lead?.let {
+            getView().displayLeadInfo(it)
+            call(it.phone)
+        }
     }
+
+    private fun call(phone: String) = getView().callButtonClicked().subscribe { getView().call(phone) }
 
 }

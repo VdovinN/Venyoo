@@ -191,14 +191,14 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/callButton"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="24dp"
-        android:backgroundTint="@color/greenCall"
+        android:layout_margin="16dp"
         app:borderWidth="0dp"
+        app:backgroundTint="@color/greenCall"
         app:elevation="6dp"
         app:fabSize="normal"
         app:srcCompat="@drawable/ic_call_white" />

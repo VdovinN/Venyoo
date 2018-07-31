@@ -26,4 +26,5 @@
     <string name="your_password">Ваш пароль</string>
     <string name="remember_password_question">Забыли пароль?</string>
     <string name="enter">Войти</string>
+    <string name="network_problems">Ошибка! Проверьте интернет-соединение</string>
 </resources>

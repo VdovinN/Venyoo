@@ -1,12 +1,12 @@
 package com.app.venyoo.screens.lead.main.adapter
 
-import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.amulyakhare.textdrawable.TextDrawable
 import com.app.venyoo.R
 import com.app.venyoo.extension.inflate
+import com.app.venyoo.extension.intToRGB
 import com.app.venyoo.helper.DateHelper
 import com.app.venyoo.network.model.Lead
 import com.jakewharton.rxbinding2.view.RxView
@@ -52,16 +52,20 @@ class LeadAdapter(private var leadList: MutableList<Lead>) : RecyclerView.Adapte
                     else -> lead.email
                 }
 
-                val rnd = Random()
-                val randomColor = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
-                val textDrawable = TextDrawable.builder().beginConfig().width(60).height(60).endConfig().buildRect(if (title.isNotEmpty()) title[0].toString() else "", randomColor)
+                val result = if (title.isNotEmpty()) title[0].toString() else ""
+
+                val textDrawable = TextDrawable.builder()
+                        .beginConfig()
+                        .width(60)
+                        .height(60)
+                        .endConfig()
+                        .buildRect(result, title.hashCode().intToRGB())
                 itemView.leadUserImageView.setImageDrawable(textDrawable)
             }
 
             itemView.leadUserNameTextView.text = lead.firstLastName
-            itemView.leadTimeTextView.text = lead.createdAt?.let { DateHelper.formatDate(it) }
+            itemView.leadTimeTextView.text = lead.createdAt.let { DateHelper.formatDate(it) }
             itemView.leadContentTextView.text = lead.question
         }
     }
-
 }

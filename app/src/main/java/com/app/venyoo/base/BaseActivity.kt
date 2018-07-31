@@ -19,36 +19,15 @@ open class BaseActivity : AppCompatActivity() {
 
     private val networkReceiver = NetworkReceiver()
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         registerNetworkBroadcastForNougat()
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onPause() {
+        super.onPause()
         unregisterNetworkChanges()
     }
-
-    /*override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
-
-        val v = currentFocus
-
-         if (v != null &&
-                 (ev.action == MotionEvent.ACTION_UP || ev.action == MotionEvent.ACTION_MOVE) &&
-                 v is EditText &&
-                 !v.javaClass.name.startsWith("android.webkit.")) {
-             val scrcoords = IntArray(2)
-             v.getLocationOnScreen(scrcoords)
-             val x = ev.rawX + v.left - scrcoords[0]
-             val y = ev.rawY + v.top - scrcoords[1]
-
-             if (x < v.left || x > v.right || y < v.top || y > v.bottom) {
-                 v.hideKeyboard()
-                 v.clearFocus()
-             }
-         }
-        return super.dispatchTouchEvent(ev)
-    }*/
 
     private fun registerNetworkBroadcastForNougat() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
