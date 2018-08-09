@@ -14,7 +14,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:src="@color/black"
+        android:src="@color/darkBlueColor"
         app:civ_border_color="#FF000000"
         app:civ_border_width="2dp" />
 

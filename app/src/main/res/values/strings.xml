@@ -15,7 +15,7 @@
     <string name="connected">Подключены</string>
     <string name="from_email">Из почты</string>
     <string name="from_crm">Из CRM</string>
-    <string name="not_seen">Не просмотрен</string>
+    <string name="not_seen">Не просмотрена</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
     <string name="do_you_want_to_exit">Вы действительно хотите выйти из программы?</string>
@@ -27,4 +27,10 @@
     <string name="remember_password_question">Забыли пароль?</string>
     <string name="enter">Войти</string>
     <string name="network_problems">Ошибка! Проверьте интернет-соединение</string>
+    <string name="city">Город</string>
+    <string name="social_profile">Профиль в соц.сети</string>
+    <string name="city_by_ip">Город, определенный по IP</string>
+    <string name="send_device">Устройство, с которого отправлена заявка</string>
+    <string name="from_computer">С компьютера</string>
+    <string name="from_mobile">С мобильного телефона</string>
 </resources>

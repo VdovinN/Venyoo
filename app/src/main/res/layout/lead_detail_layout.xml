@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -37,7 +37,7 @@
                     android:layout_height="80dp"
                     android:layout_centerVertical="true"
                     android:layout_margin="4dp"
-                    android:src="@color/black" />
+                    android:src="@color/darkBlueColor" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -51,7 +51,7 @@
                         android:id="@+id/leadUserTitleTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/darkBlueColor" />
 
                     <TextView
                         android:id="@+id/leadUserCityTextView"
@@ -155,6 +155,48 @@
                 android:background="@color/generalGray" />
 
             <TextView
+                android:id="@+id/leadUserTownTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/city" />
+
+            <TextView
+                android:id="@+id/leadUserTownTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/opacityBlack" />
+
+            <View
+                android:id="@+id/leadUserTownLineView"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/generalGray" />
+
+            <TextView
+                android:id="@+id/leadUserSocialProfileTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/social_profile" />
+
+            <TextView
+                android:autoLink="web"
+                android:id="@+id/leadUserSocialProfileTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/linkBlue" />
+
+            <View
+                android:id="@+id/leadUserSocialProfileLineView"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/generalGray" />
+
+            <TextView
+                android:id="@+id/leadUserSmsTitleTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -168,13 +210,16 @@
                 android:textColor="@color/opacityBlack" />
 
             <View
+                android:id="@+id/leadUserSmsLineView"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/generalGray" />
 
             <TextView
+                android:id="@+id/leadUserSeenTitleTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/lead_seen" />
 
@@ -182,10 +227,58 @@
                 android:id="@+id/leadUserSeenTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:textColor="@color/opacityBlack" />
 
-        </LinearLayout>
+            <View
+                android:id="@+id/leadUserSeenLineView"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/generalGray" />
 
+            <TextView
+                android:id="@+id/leadUserDeviceTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/send_device" />
+
+            <TextView
+                android:id="@+id/leadUserDeviceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/opacityBlack" />
+
+            <View
+                android:id="@+id/leadUserDeviceLineView"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/generalGray" />
+
+            <TextView
+                android:id="@+id/leadUserCityByIpTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/city_by_ip" />
+
+            <TextView
+                android:id="@+id/leadUserCityByIpTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/opacityBlack" />
+
+            <View
+                android:id="@+id/leadUserCityByIpLineView"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/generalGray" />
+
+        </LinearLayout>
 
     </ScrollView>
 
@@ -197,8 +290,8 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_margin="16dp"
-        app:borderWidth="0dp"
         app:backgroundTint="@color/greenCall"
+        app:borderWidth="0dp"
         app:elevation="6dp"
         app:fabSize="normal"
         app:srcCompat="@drawable/ic_call_white" />

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.text.method.LinkMovementMethod
 import android.view.MenuItem
 import android.view.View
 import com.amulyakhare.textdrawable.TextDrawable
@@ -92,6 +93,39 @@ class LeadDetailActivity : BaseActivity(), LeadDetailView {
         leadUserCityTextView.text = lead.region
         leadUserQuestionTextView.text = lead.question
         leadUserDateTextView.text = lead.createdAt.let { DateHelper.formatExactDate(it) }
+
+        if (lead.geotag != null) {
+            lead.geotag?.let {
+                leadUserCityByIpTextView.text = it.city
+            }
+        } else {
+            leadUserCityByIpLineView.visibility = View.GONE
+            leadUserCityByIpTextView.visibility = View.GONE
+            leadUserCityByIpTitleTextView.visibility = View.GONE
+        }
+
+
+        leadUserDeviceTextView.text = if (lead.isMobile == 0) getString(R.string.from_computer) else getString(R.string.from_mobile)
+
+        if (lead.region.isEmpty()) {
+            leadUserTownTextView.visibility = View.GONE
+            leadUserTownTitleTextView.visibility = View.GONE
+            leadUserTownLineView.visibility = View.GONE
+        } else {
+            leadUserTownTextView.text = lead.region
+        }
+
+        if (lead.socialData != null) {
+            lead.socialData?.let {
+                Picasso.get().load(it.photo).into(leadUserImageView)
+                leadUserSocialProfileTextView.text = it.profile
+            }
+
+        } else {
+            leadUserSocialProfileTitleTextView.visibility = View.GONE
+            leadUserSocialProfileTextView.visibility = View.GONE
+            leadUserSocialProfileLineView.visibility = View.GONE
+        }
 
         if (lead.phone.isEmpty()) {
             leadUserPhoneFieldTextView.visibility = View.GONE
