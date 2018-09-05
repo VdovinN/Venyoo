@@ -52,7 +52,7 @@ class LeadAdapter(private var leadList: MutableList<Lead>) : RecyclerView.Adapte
                     else -> lead.email
                 }
 
-                val result = if (title.isNotEmpty()) title[0].toString() else ""
+                val result = if (title.isNotEmpty()) title[0].toUpperCase().toString() else ""
 
                 val textDrawable = TextDrawable.builder()
                         .beginConfig()

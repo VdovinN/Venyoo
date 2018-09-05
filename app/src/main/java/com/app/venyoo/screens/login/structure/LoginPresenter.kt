@@ -46,7 +46,7 @@ class LoginPresenter(private val api: VenyooApi, private val preferenceHelper: P
             },
                     { it.printStackTrace() })
 
-    private fun isAuthorized(): Disposable = Observable.just(preferenceHelper.loadToken()).filter { !it.isEmpty() }.flatMap { api.login(preferenceHelper.loadEmail(), preferenceHelper.loadPassword()) }
+    fun isAuthorized(): Disposable = Observable.just(preferenceHelper.loadToken()).filter { !it.isEmpty() }.flatMap { api.login(preferenceHelper.loadEmail(), preferenceHelper.loadPassword()) }
             .subscribeOn(rxSchedulers.io())
             .observeOn(rxSchedulers.androidUI())
             .subscribe({

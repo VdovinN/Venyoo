@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.text.method.LinkMovementMethod
 import android.view.MenuItem
 import android.view.View
 import com.amulyakhare.textdrawable.TextDrawable
@@ -84,7 +83,7 @@ class LeadDetailActivity : BaseActivity(), LeadDetailView {
                 else -> lead.email
             }
 
-            val result = if (title.isNotEmpty()) title[0].toString() else ""
+            val result = if (title.isNotEmpty()) title[0].toUpperCase().toString() else ""
 
             val textDrawable = TextDrawable.builder().beginConfig().width(60).height(60).endConfig().buildRect(result, title.hashCode().intToRGB())
             leadUserImageView.setImageDrawable(textDrawable)

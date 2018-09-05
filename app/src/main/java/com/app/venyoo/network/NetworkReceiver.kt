@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.ConnectivityManager
 import android.support.v7.app.AlertDialog
 import com.app.venyoo.R
+import com.app.venyoo.screens.login.LoginActivity
 
 class NetworkReceiver : BroadcastReceiver() {
 
@@ -20,6 +21,9 @@ class NetworkReceiver : BroadcastReceiver() {
             alertDialog?.show()
         } else {
             alertDialog?.dismiss()
+            if(context is LoginActivity){
+                context.presenter.isAuthorized()
+            }
         }
     }
 
