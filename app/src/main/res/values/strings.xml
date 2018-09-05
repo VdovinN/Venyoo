@@ -33,4 +33,6 @@
     <string name="send_device">Устройство, с которого отправлена заявка</string>
     <string name="from_computer">С компьютера</string>
     <string name="from_mobile">С мобильного телефона</string>
+    <string name="client_select">Клиент указал</string>
+    <string name="we_define">Мы определили</string>
 </resources>

@@ -10,9 +10,11 @@ import com.app.venyoo.extension.intToRGB
 import com.app.venyoo.helper.DateHelper
 import com.app.venyoo.network.model.Lead
 import com.jakewharton.rxbinding2.view.RxView
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.lead_item_layout.view.*
+import java.lang.Exception
 import java.util.*
 
 class LeadAdapter(private var leadList: MutableList<Lead>) : RecyclerView.Adapter<LeadAdapter.ViewHolder>() {
@@ -43,29 +45,41 @@ class LeadAdapter(private var leadList: MutableList<Lead>) : RecyclerView.Adapte
 
             if (lead.socialData != null) {
                 lead.socialData?.let {
-                    Picasso.get().load(it.photo).into(itemView.leadUserImageView)
+                    Picasso.get().load(it.photo).into(itemView.leadUserImageView, object : Callback {
+                        override fun onSuccess() {
+                        }
+
+                        override fun onError(e: Exception) {
+                            displayDefaultImage(lead)
+                        }
+
+                    })
                 }
             } else {
-                val title = when {
-                    !lead.firstLastName.isEmpty() -> lead.firstLastName
-                    !lead.phone.isEmpty() -> lead.phone.substring(1)
-                    else -> lead.email
-                }
-
-                val result = if (title.isNotEmpty()) title[0].toUpperCase().toString() else ""
-
-                val textDrawable = TextDrawable.builder()
-                        .beginConfig()
-                        .width(60)
-                        .height(60)
-                        .endConfig()
-                        .buildRect(result, title.hashCode().intToRGB())
-                itemView.leadUserImageView.setImageDrawable(textDrawable)
+                displayDefaultImage(lead)
             }
 
             itemView.leadUserNameTextView.text = lead.firstLastName
             itemView.leadTimeTextView.text = lead.createdAt.let { DateHelper.formatDate(it) }
             itemView.leadContentTextView.text = lead.question
+        }
+
+        private fun displayDefaultImage(lead: Lead) {
+            val title = when {
+                !lead.firstLastName.isEmpty() -> lead.firstLastName
+                !lead.phone.isEmpty() -> lead.phone.substring(1)
+                else -> lead.email
+            }
+
+            val result = if (title.isNotEmpty()) title[0].toUpperCase().toString() else ""
+
+            val textDrawable = TextDrawable.builder()
+                    .beginConfig()
+                    .width(60)
+                    .height(60)
+                    .endConfig()
+                    .buildRect(result, title.hashCode().intToRGB())
+            itemView.leadUserImageView.setImageDrawable(textDrawable)
         }
     }
 }

@@ -21,9 +21,11 @@ import com.jakewharton.rxbinding2.view.RxView
 import com.r0adkll.slidr.Slidr
 import com.r0adkll.slidr.model.SlidrConfig
 import com.r0adkll.slidr.model.SlidrPosition
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.lead_detail_layout.*
+import java.lang.Exception
 import javax.inject.Inject
 
 class LeadDetailActivity : BaseActivity(), LeadDetailView {
@@ -72,23 +74,6 @@ class LeadDetailActivity : BaseActivity(), LeadDetailView {
             else -> leadUserTitleTextView.text = lead.email
         }
 
-        if (lead.socialData != null) {
-            lead.socialData?.let {
-                Picasso.get().load(it.photo).into(leadUserImageView)
-            }
-        } else {
-            val title = when {
-                !lead.firstLastName.isEmpty() -> lead.firstLastName
-                !lead.phone.isEmpty() -> lead.phone.substring(1)
-                else -> lead.email
-            }
-
-            val result = if (title.isNotEmpty()) title[0].toUpperCase().toString() else ""
-
-            val textDrawable = TextDrawable.builder().beginConfig().width(60).height(60).endConfig().buildRect(result, title.hashCode().intToRGB())
-            leadUserImageView.setImageDrawable(textDrawable)
-        }
-
         leadUserCityTextView.text = lead.region
         leadUserQuestionTextView.text = lead.question
         leadUserDateTextView.text = lead.createdAt.let { DateHelper.formatExactDate(it) }
@@ -116,7 +101,14 @@ class LeadDetailActivity : BaseActivity(), LeadDetailView {
 
         if (lead.socialData != null) {
             lead.socialData?.let {
-                Picasso.get().load(it.photo).into(leadUserImageView)
+                Picasso.get().load(it.photo).into(leadUserImageView, object : Callback {
+                    override fun onSuccess() {
+                    }
+
+                    override fun onError(e: Exception?) {
+                        displayDefaultImage(lead)
+                    }
+                })
                 leadUserSocialProfileTextView.text = it.profile
             }
 
@@ -144,8 +136,14 @@ class LeadDetailActivity : BaseActivity(), LeadDetailView {
         }
 
         leadUserSeenTextView.text = when (lead.show) {
-            "email" -> getString(R.string.from_email)
-            "crm" -> getString(R.string.from_crm)
+            "email" -> {
+                val emailTxt = getString(R.string.from_email)
+                if (lead.showTs > 0) "$emailTxt ${DateHelper.formatTime(lead.showTs)}" else emailTxt
+            }
+            "crm" -> {
+                val crmTxt = getString(R.string.from_crm)
+                if (lead.showTs > 0) "$crmTxt ${DateHelper.formatTime(lead.showTs)}" else crmTxt
+            }
             else -> getString(R.string.not_seen)
         }
 
@@ -169,6 +167,19 @@ class LeadDetailActivity : BaseActivity(), LeadDetailView {
         leadUserMailTextView.underline()
         leadUserPhoneFieldTextView.underline()
 
+    }
+
+    private fun displayDefaultImage(lead: Lead) {
+        val title = when {
+            !lead.firstLastName.isEmpty() -> lead.firstLastName
+            !lead.phone.isEmpty() -> lead.phone.substring(1)
+            else -> lead.email
+        }
+
+        val result = if (title.isNotEmpty()) title[0].toUpperCase().toString() else ""
+
+        val textDrawable = TextDrawable.builder().beginConfig().width(60).height(60).endConfig().buildRect(result, title.hashCode().intToRGB())
+        leadUserImageView.setImageDrawable(textDrawable)
     }
 
     override fun callButtonClicked() = RxView.clicks(callButton)

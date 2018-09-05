@@ -159,7 +159,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="@string/city" />
+                android:text="@string/client_select" />
 
             <TextView
                 android:id="@+id/leadUserTownTextView"
@@ -182,11 +182,11 @@
                 android:text="@string/social_profile" />
 
             <TextView
-                android:autoLink="web"
                 android:id="@+id/leadUserSocialProfileTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
+                android:autoLink="web"
                 android:textColor="@color/linkBlue" />
 
             <View
@@ -263,7 +263,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
-                android:text="@string/city_by_ip" />
+                android:text="@string/we_define" />
 
             <TextView
                 android:id="@+id/leadUserCityByIpTextView"
