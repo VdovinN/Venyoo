@@ -41,7 +41,10 @@
         <item name="colorPrimaryDark">@color/redStatusBarColor</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
 
+    <style name="FooterProgressBarTheme" parent="AppTheme">
+        <item name="colorAccent">@color/generalRed</item>
     </style>
 
 </resources>

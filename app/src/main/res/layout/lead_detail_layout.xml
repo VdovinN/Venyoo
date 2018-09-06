@@ -278,6 +278,27 @@
                 android:layout_height="1dp"
                 android:background="@color/generalGray" />
 
+            <TextView
+                android:id="@+id/leadUserUrlTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/lead_sent" />
+
+            <TextView
+                android:id="@+id/leadUserUrlTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/opacityBlack" />
+
+            <View
+                android:id="@+id/leadUserUrlLineView"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/generalGray" />
+
         </LinearLayout>
 
     </ScrollView>

@@ -35,4 +35,6 @@
     <string name="from_mobile">С мобильного телефона</string>
     <string name="client_select">Клиент указал</string>
     <string name="we_define">Мы определили</string>
+    <string name="lead_sent">Заявку отправили с</string>
+    <string name="loading">Загрузка...</string>
 </resources>

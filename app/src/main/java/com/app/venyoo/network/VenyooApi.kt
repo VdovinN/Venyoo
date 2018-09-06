@@ -13,6 +13,6 @@ interface VenyooApi {
     fun login(@Query("email") email: String, @Query("password") password: String): Observable<Response<Login>>
 
     @POST("/rest/leads")
-    fun getLeads(@Query("token") token: String): Observable<Data>
+    fun getLeads(@Query("token") token: String, @Query("page") page: Int): Observable<Data>
 
 }

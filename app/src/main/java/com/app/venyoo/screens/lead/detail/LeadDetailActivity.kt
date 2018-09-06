@@ -147,6 +147,14 @@ class LeadDetailActivity : BaseActivity(), LeadDetailView {
             else -> getString(R.string.not_seen)
         }
 
+        if (lead.url.isEmpty()) {
+            leadUserUrlTitleTextView.visibility = View.GONE
+            leadUserUrlTextView.visibility = View.GONE
+            leadUserUrlLineView.visibility = View.GONE
+        } else {
+            leadUserUrlTextView.text = lead.url
+        }
+
         val statusPairList = listOf(
                 Pair("new", "Не обработан"),
                 Pair("connect_fail", "Не удалось связаться"),

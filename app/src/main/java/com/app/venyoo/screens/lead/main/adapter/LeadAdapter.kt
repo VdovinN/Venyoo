@@ -19,9 +19,15 @@ import java.util.*
 
 class LeadAdapter(private var leadList: MutableList<Lead>) : RecyclerView.Adapter<LeadAdapter.ViewHolder>() {
 
+    private val TYPE_LOADING = -1
+    private val TYPE_RECIPE = 1
+
     val itemClicked: PublishSubject<Lead> = PublishSubject.create()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(parent.inflate(R.layout.lead_item_layout))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = when (viewType) {
+        TYPE_LOADING -> ViewHolder(parent.inflate(R.layout.lead_item_loading_layout))
+        else -> ViewHolder(parent.inflate(R.layout.lead_item_layout))
+    }
 
     override fun getItemCount(): Int = leadList.size
 
@@ -30,9 +36,22 @@ class LeadAdapter(private var leadList: MutableList<Lead>) : RecyclerView.Adapte
         holder.bind(lead)
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return if (position == leadList.size - 1) TYPE_LOADING else TYPE_RECIPE
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
     fun swap(leads: MutableList<Lead>) {
         leadList = ArrayList(leads)
         notifyDataSetChanged()
+    }
+
+    fun addItems(leadList: MutableList<Lead>) {
+        this.leadList.addAll(leadList)
+        notifyItemInserted(this.leadList.size - 1)
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

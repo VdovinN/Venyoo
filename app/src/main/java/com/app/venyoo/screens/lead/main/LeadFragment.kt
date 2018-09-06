@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +29,24 @@ class LeadFragment : Fragment(), LeadView {
 
     private lateinit var adapter: LeadAdapter
 
+    private lateinit var layoutManager: LinearLayoutManager
+
+    private var isLoading = false
+    private var currentPage = 1
+
+    private val recyclerViewOnScrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            val visibleItemCount = layoutManager.childCount
+            val totalItemCount = layoutManager.itemCount
+            val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+
+            if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && !isLoading) {
+                loadMoreItems()
+            }
+        }
+    }
+
     companion object {
         val TAG: String = LeadFragment::class.java.simpleName
         fun newInstance(): LeadFragment = LeadFragment()
@@ -39,9 +58,12 @@ class LeadFragment : Fragment(), LeadView {
         AndroidSupportInjection.inject(this)
         super.onViewCreated(view, savedInstanceState)
 
-        leadRecyclerView.layoutManager = LinearLayoutManager(context)
+        layoutManager = LinearLayoutManager(context)
+        leadRecyclerView.layoutManager = layoutManager
         adapter = LeadAdapter(mutableListOf())
         leadRecyclerView.adapter = adapter
+
+        leadRecyclerView.addOnScrollListener(recyclerViewOnScrollListener)
 
 
         (activity as MainActivity).supportActionBar?.title = getString(R.string.leads)
@@ -75,5 +97,17 @@ class LeadFragment : Fragment(), LeadView {
 
     override fun openLeadDetail(lead: Lead) {
         startActivity(context?.leadDetail(lead))
+    }
+
+    override fun addLeads(leadList: MutableList<Lead>) {
+        adapter.addItems(leadList)
+    }
+
+    private fun loadMoreItems() {
+        isLoading = true
+
+        currentPage += 1
+
+        presenter.loadMore(currentPage)
     }
 }

@@ -14,4 +14,5 @@ interface LeadView : BaseView {
 
     fun swipeToResfresh(): Observable<Any>
     fun setRefreshing(isRefreshing: Boolean)
+    fun addLeads(leadList: MutableList<Lead>)
 }

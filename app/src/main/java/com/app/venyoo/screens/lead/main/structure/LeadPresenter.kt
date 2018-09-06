@@ -18,7 +18,7 @@ class LeadPresenter @Inject constructor(private val api: VenyooApi, private val 
     private fun click() = getView().leadClicked().subscribe { getView().openLeadDetail(it) }
 
     private fun loadLeads() =
-            api.getLeads(preferenceHelper.loadToken())
+            api.getLeads(preferenceHelper.loadToken(), 1)
                     .subscribeOn(rxSchedulers.io())
                     .observeOn(rxSchedulers.androidUI())
                     .subscribe {
@@ -27,7 +27,7 @@ class LeadPresenter @Inject constructor(private val api: VenyooApi, private val 
 
     private fun swipe() = getView().swipeToResfresh()
             .observeOn(rxSchedulers.io())
-            .flatMap { api.getLeads(preferenceHelper.loadToken()) }
+            .flatMap { api.getLeads(preferenceHelper.loadToken(), 1) }
             .observeOn(rxSchedulers.androidUI())
             .subscribe {
                 it.data?.let { it1 ->
@@ -35,4 +35,11 @@ class LeadPresenter @Inject constructor(private val api: VenyooApi, private val 
                 }
                 getView().setRefreshing(false)
             }
+
+    fun loadMore(page: Int) {
+        api.getLeads(preferenceHelper.loadToken(), page)
+                .subscribeOn(rxSchedulers.io())
+                .observeOn(rxSchedulers.androidUI())
+                .subscribe { it.data?.let { it1 -> getView().addLeads(it1) } }
+    }
 }
