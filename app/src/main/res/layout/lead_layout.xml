@@ -10,6 +10,10 @@
         android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
+            android:paddingEnd="12dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingStart="12dp"
             android:id="@+id/leadRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

@@ -21,10 +21,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginStart="12dp"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -33,10 +33,10 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/leadUserImageView"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_centerVertical="true"
-                    android:layout_margin="4dp"
+                    android:layout_margin="8dp"
                     android:src="@color/darkBlueColor" />
 
                 <LinearLayout
@@ -310,7 +310,9 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         app:backgroundTint="@color/greenCall"
         app:borderWidth="0dp"
         app:elevation="6dp"
