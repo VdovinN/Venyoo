@@ -1,5 +1,7 @@
 package com.app.venyoo.screens.lead.main
 
+import android.arch.lifecycle.Observer
+import android.arch.paging.PagedList
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
@@ -11,8 +13,10 @@ import android.view.ViewGroup
 import com.app.venyoo.R
 import com.app.venyoo.extension.inflate
 import com.app.venyoo.extension.leadDetail
+import com.app.venyoo.network.LeadsViewModel
+import com.app.venyoo.network.NetworkState
 import com.app.venyoo.network.model.Lead
-import com.app.venyoo.screens.lead.main.adapter.LeadAdapter
+import com.app.venyoo.screens.lead.main.adapter.LeadPagedAdater
 import com.app.venyoo.screens.lead.main.structure.LeadPresenter
 import com.app.venyoo.screens.lead.main.structure.LeadView
 import com.app.venyoo.screens.main.MainActivity
@@ -27,9 +31,11 @@ class LeadFragment : Fragment(), LeadView {
     @Inject
     lateinit var presenter: LeadPresenter
 
-    private lateinit var adapter: LeadAdapter
+    private lateinit var adapter: LeadPagedAdater
 
     private lateinit var layoutManager: LinearLayoutManager
+
+    private lateinit var usersViewModel: LeadsViewModel
 
     private var isLoading = false
     private var currentPage = 1
@@ -60,11 +66,12 @@ class LeadFragment : Fragment(), LeadView {
 
         layoutManager = LinearLayoutManager(context)
         leadRecyclerView.layoutManager = layoutManager
-        adapter = LeadAdapter(mutableListOf())
+        //adapter = LeadAdapter(mutableListOf())
         leadRecyclerView.adapter = adapter
 
         leadRecyclerView.addOnScrollListener(recyclerViewOnScrollListener)
 
+        initAdapter()
 
         (activity as MainActivity).supportActionBar?.title = getString(R.string.leads)
 
@@ -76,8 +83,20 @@ class LeadFragment : Fragment(), LeadView {
         presenter.takeView(this)
     }
 
+
+    private fun initAdapter() {
+        val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        adapter = LeadPagedAdater {
+            usersViewModel.retry()
+        }
+        leadRecyclerView.layoutManager = linearLayoutManager
+        leadRecyclerView.adapter = adapter
+        usersViewModel.leadList.observe(this, Observer<PagedList<Lead>> { adapter.submitList(it) })
+        usersViewModel.getNetworkState().observe(this, Observer<NetworkState> { adapter.setNetworkState(it) })
+    }
+
     override fun displayLeads(leadList: MutableList<Lead>) {
-        adapter.swap(leadList)
+        // adapter.swap(leadList)
     }
 
     override fun setRefreshing(isRefreshing: Boolean) {
@@ -100,7 +119,7 @@ class LeadFragment : Fragment(), LeadView {
     }
 
     override fun addLeads(leadList: MutableList<Lead>) {
-        adapter.addItems(leadList)
+        //adapter.addItems(leadList)
     }
 
     private fun loadMoreItems() {

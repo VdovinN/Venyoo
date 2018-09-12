@@ -82,4 +82,10 @@ dependencies {
     //transition animation
     implementation "com.r0adkll:slidableactivity:$project.slidrVersion"
 
+    //paging
+    implementation "android.arch.paging:runtime:$project.pagingVersion"
+
+    //arch
+    implementation "android.arch.lifecycle:extensions:$project.archVersion"
+
 }
