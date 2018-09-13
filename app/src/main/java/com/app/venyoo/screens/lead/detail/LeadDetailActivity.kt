@@ -14,6 +14,7 @@ import com.app.venyoo.extension.intToRGB
 import com.app.venyoo.extension.underline
 import com.app.venyoo.helper.DateHelper
 import com.app.venyoo.network.model.Lead
+import com.app.venyoo.network.model.Status
 import com.app.venyoo.screens.lead.detail.adapter.LeadDetailSpinnerAdapter
 import com.app.venyoo.screens.lead.detail.structure.LeadDetailPresenter
 import com.app.venyoo.screens.lead.detail.structure.LeadDetailView
@@ -155,7 +156,19 @@ class LeadDetailActivity : BaseActivity(), LeadDetailView {
             leadUserUrlTextView.text = lead.url
         }
 
-        val statusPairList = listOf(
+        lead.statuses?.let { statusList ->
+            {
+                val statusPairList = mutableListOf<Pair<String, String>>()
+                val orderedList = statusList.sortedBy { it.order }
+                for (status: Status in orderedList) {
+                    statusPairList.add(Pair(status.name, status.color))
+                }
+                leadUserStatusSpinner.adapter = LeadDetailSpinnerAdapter(this, statusPairList)
+            }
+
+        }
+
+        /*val statusPairList = listOf(
                 Pair("new", "Не обработан"),
                 Pair("connect_fail", "Не удалось связаться"),
                 Pair("help_question", "Справочный вопрос"),
@@ -166,9 +179,8 @@ class LeadDetailActivity : BaseActivity(), LeadDetailView {
                 Pair("send_mail", "Отправил письмо"),
                 Pair("got_mail", "Получил ответ на e-mail"),
                 Pair("open", "Открытый лид"),
-                Pair("in_progress", "В обработке"))
+                Pair("in_progress", "В обработке"))*/
 
-        leadUserStatusSpinner.adapter = LeadDetailSpinnerAdapter(this, statusPairList)
 
         leadUserSmsTextView.text = if (lead.sms == 0) getString(R.string.not_connected) else getString(R.string.connected)
 

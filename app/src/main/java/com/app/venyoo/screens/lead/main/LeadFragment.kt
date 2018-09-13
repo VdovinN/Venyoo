@@ -34,11 +34,7 @@ class LeadFragment : Fragment(), LeadView {
 
     private lateinit var adapter: LeadPagedAdater
 
-    private lateinit var layoutManager: LinearLayoutManager
-
     private lateinit var usersViewModel: LeadsViewModel
-
-    private var isLoading = false
 
     companion object {
         val TAG: String = LeadFragment::class.java.simpleName

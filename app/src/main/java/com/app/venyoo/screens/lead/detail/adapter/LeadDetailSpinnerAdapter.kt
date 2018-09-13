@@ -62,7 +62,7 @@ class LeadDetailSpinnerAdapter(context: Context?, var statusList: List<Pair<Stri
 
         fun bind(pair: Pair<String, String>) {
 
-            row.leadUserStatusTextView.text = pair.second
+            row.leadUserStatusTextView.text = pair.first
 
         }
 
