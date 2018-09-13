@@ -112,7 +112,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/generalGray" />
+                android:background="@color/dividerColor" />
 
             <TextView
                 android:id="@+id/leadUserPhoneFieldTitleTextView"
@@ -132,7 +132,7 @@
                 android:id="@+id/leadUserPhoneFieldLineView"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/generalGray" />
+                android:background="@color/dividerColor" />
 
             <TextView
                 android:id="@+id/leadUserMailTitleTextView"
@@ -152,7 +152,7 @@
                 android:id="@+id/leadUserMailLineView"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/generalGray" />
+                android:background="@color/dividerColor" />
 
             <TextView
                 android:id="@+id/leadUserTownTitleTextView"
@@ -172,7 +172,7 @@
                 android:id="@+id/leadUserTownLineView"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/generalGray" />
+                android:background="@color/dividerColor" />
 
             <TextView
                 android:id="@+id/leadUserSocialProfileTitleTextView"
@@ -193,7 +193,7 @@
                 android:id="@+id/leadUserSocialProfileLineView"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/generalGray" />
+                android:background="@color/dividerColor" />
 
             <TextView
                 android:id="@+id/leadUserSmsTitleTextView"
@@ -213,7 +213,7 @@
                 android:id="@+id/leadUserSmsLineView"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/generalGray" />
+                android:background="@color/dividerColor" />
 
             <TextView
                 android:id="@+id/leadUserSeenTitleTextView"
@@ -234,7 +234,7 @@
                 android:id="@+id/leadUserSeenLineView"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/generalGray" />
+                android:background="@color/dividerColor" />
 
             <TextView
                 android:id="@+id/leadUserDeviceTitleTextView"
@@ -255,7 +255,7 @@
                 android:id="@+id/leadUserDeviceLineView"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/generalGray" />
+                android:background="@color/dividerColor" />
 
             <TextView
                 android:id="@+id/leadUserCityByIpTitleTextView"
@@ -276,7 +276,7 @@
                 android:id="@+id/leadUserCityByIpLineView"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/generalGray" />
+                android:background="@color/dividerColor" />
 
             <TextView
                 android:id="@+id/leadUserUrlTitleTextView"
@@ -297,7 +297,7 @@
                 android:id="@+id/leadUserUrlLineView"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/generalGray" />
+                android:background="@color/dividerColor" />
 
         </LinearLayout>
 

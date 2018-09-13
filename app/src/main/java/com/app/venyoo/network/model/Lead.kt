@@ -55,5 +55,7 @@ data class Lead(
         @SerializedName("socialData")
         var socialData: SocialData? = null,
         @SerializedName("room_id")
-        val roomId: String
+        val roomId: String,
+        @SerializedName("statuses")
+        val statuses: List<Status>? = null
 ) : Serializable

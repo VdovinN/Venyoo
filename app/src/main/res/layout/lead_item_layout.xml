@@ -66,6 +66,6 @@
         android:layout_alignParentBottom="true"
         android:layout_toEndOf="@id/leadUserImageView"
         android:layout_toRightOf="@id/leadUserImageView"
-        android:background="@color/generalGray" />
+        android:background="@color/dividerColor" />
 
 </RelativeLayout>

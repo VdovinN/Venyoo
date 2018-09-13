@@ -13,4 +13,5 @@
     <color name="greenCall">#00CB39</color>
     <color name="grayStatusBarColor">#BFBFBF</color>
     <color name="redStatusBarColor">#CF1B42</color>
+    <color name="dividerColor">#EDEDF0</color>
 </resources>
