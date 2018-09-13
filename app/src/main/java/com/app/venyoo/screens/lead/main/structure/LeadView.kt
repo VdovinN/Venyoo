@@ -6,13 +6,7 @@ import io.reactivex.Observable
 
 interface LeadView : BaseView {
 
-    fun displayLeads(leadList: MutableList<Lead>)
-
     fun openLeadDetail(lead: Lead)
 
     fun leadClicked(): Observable<Lead>
-
-    fun swipeToResfresh(): Observable<Any>
-    fun setRefreshing(isRefreshing: Boolean)
-    fun addLeads(leadList: MutableList<Lead>)
 }

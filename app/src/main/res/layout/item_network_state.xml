@@ -13,17 +13,19 @@
 
     <ProgressBar
         android:id="@+id/loadingProgressBar"
-        style="?android:attr/progressBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:theme="@style/FooterProgressBarTheme" />
 
     <Button
         android:id="@+id/retryLoadingButton"
-        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/retry" />
+        android:background="@color/generalRed"
+        android:padding="8dp"
+        android:text="@string/retry"
+        android:textColor="@color/white" />
 
 </LinearLayout>

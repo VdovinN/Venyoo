@@ -6,40 +6,13 @@ import com.app.venyoo.network.VenyooApi
 import com.app.venyoo.rx.RxSchedulers
 import javax.inject.Inject
 
-class LeadPresenter @Inject constructor(private val api: VenyooApi, private val preferenceHelper: PreferenceHelper, private val rxSchedulers: RxSchedulers) : BasePresenter<LeadView>() {
+class LeadPresenter @Inject constructor(val api: VenyooApi, val preferenceHelper: PreferenceHelper, val rxSchedulers: RxSchedulers) : BasePresenter<LeadView>() {
 
     override fun onLoad() {
         super.onLoad()
-        disposables.add(loadLeads())
         disposables.add(click())
-        disposables.add(swipe())
     }
 
     private fun click() = getView().leadClicked().subscribe { getView().openLeadDetail(it) }
 
-    private fun loadLeads() =
-            api.getLeads(preferenceHelper.loadToken(), 1)
-                    .subscribeOn(rxSchedulers.io())
-                    .observeOn(rxSchedulers.androidUI())
-                    .subscribe {
-                        it.data?.let { it1 -> getView().displayLeads(it1) }
-                    }
-
-    private fun swipe() = getView().swipeToResfresh()
-            .observeOn(rxSchedulers.io())
-            .flatMap { api.getLeads(preferenceHelper.loadToken(), 1) }
-            .observeOn(rxSchedulers.androidUI())
-            .subscribe {
-                it.data?.let { it1 ->
-                    getView().displayLeads(it1)
-                }
-                getView().setRefreshing(false)
-            }
-
-    fun loadMore(page: Int) {
-        api.getLeads(preferenceHelper.loadToken(), page)
-                .subscribeOn(rxSchedulers.io())
-                .observeOn(rxSchedulers.androidUI())
-                .subscribe { it.data?.let { it1 -> getView().addLeads(it1) } }
-    }
 }

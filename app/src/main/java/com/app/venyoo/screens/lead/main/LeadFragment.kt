@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +14,7 @@ import com.app.venyoo.extension.inflate
 import com.app.venyoo.extension.leadDetail
 import com.app.venyoo.network.LeadsViewModel
 import com.app.venyoo.network.NetworkState
+import com.app.venyoo.network.Status
 import com.app.venyoo.network.model.Lead
 import com.app.venyoo.screens.lead.main.adapter.LeadPagedAdater
 import com.app.venyoo.screens.lead.main.structure.LeadPresenter
@@ -22,6 +22,7 @@ import com.app.venyoo.screens.lead.main.structure.LeadView
 import com.app.venyoo.screens.main.MainActivity
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.Observable
+import kotlinx.android.synthetic.main.item_network_state.*
 import kotlinx.android.synthetic.main.lead_layout.*
 import javax.inject.Inject
 
@@ -38,20 +39,6 @@ class LeadFragment : Fragment(), LeadView {
     private lateinit var usersViewModel: LeadsViewModel
 
     private var isLoading = false
-    private var currentPage = 1
-
-    private val recyclerViewOnScrollListener = object : RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            val visibleItemCount = layoutManager.childCount
-            val totalItemCount = layoutManager.itemCount
-            val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
-
-            if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && !isLoading) {
-                loadMoreItems()
-            }
-        }
-    }
 
     companion object {
         val TAG: String = LeadFragment::class.java.simpleName
@@ -64,21 +51,17 @@ class LeadFragment : Fragment(), LeadView {
         AndroidSupportInjection.inject(this)
         super.onViewCreated(view, savedInstanceState)
 
-        layoutManager = LinearLayoutManager(context)
-        leadRecyclerView.layoutManager = layoutManager
-        //adapter = LeadAdapter(mutableListOf())
-        leadRecyclerView.adapter = adapter
-
-        leadRecyclerView.addOnScrollListener(recyclerViewOnScrollListener)
+        usersViewModel = LeadsViewModel(presenter.api, presenter.preferenceHelper, presenter.rxSchedulers)
 
         initAdapter()
+
+        initSwipeToRefresh()
 
         (activity as MainActivity).supportActionBar?.title = getString(R.string.leads)
 
         context?.let {
             refreshLayout.setColorSchemeColors(ContextCompat.getColor(it, R.color.generalRed))
         }
-
 
         presenter.takeView(this)
     }
@@ -95,38 +78,38 @@ class LeadFragment : Fragment(), LeadView {
         usersViewModel.getNetworkState().observe(this, Observer<NetworkState> { adapter.setNetworkState(it) })
     }
 
-    override fun displayLeads(leadList: MutableList<Lead>) {
-        // adapter.swap(leadList)
-    }
-
-    override fun setRefreshing(isRefreshing: Boolean) {
-        refreshLayout.isRefreshing = isRefreshing
-    }
-
-    override fun swipeToResfresh(): Observable<Any> {
-        return Observable.create {
-            refreshLayout.setOnRefreshListener {
-                it.onNext(Any())
-                setRefreshing(false)
+    private fun initSwipeToRefresh() {
+        usersViewModel.getRefreshState().observe(this, Observer { networkState ->
+            if (adapter.currentList != null) {
+                if (adapter.currentList!!.size > 0) {
+                    refreshLayout.isRefreshing = networkState?.status == NetworkState.LOADING.status
+                } else {
+                    setInitialLoadingState(networkState)
+                }
+            } else {
+                setInitialLoadingState(networkState)
             }
-        }
+        })
+        refreshLayout.setOnRefreshListener { usersViewModel.refresh() }
     }
+
+    private fun setInitialLoadingState(networkState: NetworkState?) {
+        errorMessageTextView.visibility = if (networkState?.message != null) View.VISIBLE else View.GONE
+        if (networkState?.message != null) {
+            errorMessageTextView.text = networkState.message
+        }
+
+        retryLoadingButton.visibility = if (networkState?.status == Status.FAILED) View.VISIBLE else View.GONE
+        loadingProgressBar.visibility = if (networkState?.status == Status.RUNNING) View.VISIBLE else View.GONE
+
+        refreshLayout.isEnabled = networkState?.status == Status.SUCCESS
+        retryLoadingButton.setOnClickListener { usersViewModel.retry() }
+    }
+
 
     override fun leadClicked(): Observable<Lead> = adapter.itemClicked
 
     override fun openLeadDetail(lead: Lead) {
         startActivity(context?.leadDetail(lead))
-    }
-
-    override fun addLeads(leadList: MutableList<Lead>) {
-        //adapter.addItems(leadList)
-    }
-
-    private fun loadMoreItems() {
-        isLoading = true
-
-        currentPage += 1
-
-        presenter.loadMore(currentPage)
     }
 }

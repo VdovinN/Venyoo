@@ -22,10 +22,16 @@ class LeadsDataSource(private val api: VenyooApi, private val preferenceHelper: 
 
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Lead>) {
+        networkState.postValue(NetworkState.LOADING)
+        initialLoad.postValue(NetworkState.LOADING)
         compositeDisposable.add(api.getLeads(preferenceHelper.loadToken(), 1).subscribe({ users ->
+            setRetry(null)
+            networkState.postValue(NetworkState.LOADED)
+            initialLoad.postValue(NetworkState.LOADED)
             callback.onResult(users.data as MutableList<Lead>)
             pageNumber++
-        }, { throwable -> setRetry(Action { loadInitial(params, callback) })
+        }, { throwable ->
+            setRetry(Action { loadInitial(params, callback) })
             val error = NetworkState.error(throwable.message)
             // publish the error
             networkState.postValue(error)
@@ -35,11 +41,9 @@ class LeadsDataSource(private val api: VenyooApi, private val preferenceHelper: 
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Lead>) {
         networkState.postValue(NetworkState.LOADING)
-        initialLoad.postValue(NetworkState.LOADING)
         compositeDisposable.add(api.getLeads(preferenceHelper.loadToken(), params.key).subscribe({ users ->
             setRetry(null)
             networkState.postValue(NetworkState.LOADED)
-            initialLoad.postValue(NetworkState.LOADED)
             callback.onResult(users.data as MutableList<Lead>)
             pageNumber++
         }, { throwable ->

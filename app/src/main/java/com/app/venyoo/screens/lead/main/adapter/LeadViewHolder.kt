@@ -9,8 +9,10 @@ import com.app.venyoo.R
 import com.app.venyoo.extension.intToRGB
 import com.app.venyoo.helper.DateHelper
 import com.app.venyoo.network.model.Lead
+import com.jakewharton.rxbinding2.view.RxView
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.lead_item_layout.view.*
 import java.lang.Exception
 
@@ -24,34 +26,30 @@ class LeadViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         }
     }
 
-    fun bind(lead: Lead?) {
+    fun bind(lead: Lead?, itemClicked: PublishSubject<Lead>) {
 
-        /* RxView.clicks(itemView)
-                 .map { lead }
-                 .subscribe(itemClicked)*/
+        RxView.clicks(itemView)
+                .map { lead }
+                .subscribe(itemClicked)
 
-        lead?.let { nonNullLead ->
-            {
-                if (nonNullLead.socialData != null) {
-                    nonNullLead.socialData?.let {
-                        Picasso.get().load(it.photo).into(itemView.leadUserImageView, object : Callback {
-                            override fun onSuccess() {
-                            }
-
-                            override fun onError(e: Exception) {
-                                displayDefaultImage(nonNullLead)
-                            }
-
-                        })
+        lead?.let {
+            if (it.socialData != null) {
+                Picasso.get().load(it.socialData?.photo).into(itemView.leadUserImageView, object : Callback {
+                    override fun onSuccess() {
                     }
-                } else {
-                    displayDefaultImage(nonNullLead)
-                }
 
-                itemView.leadUserNameTextView.text = nonNullLead.firstLastName
-                itemView.leadTimeTextView.text = nonNullLead.createdAt.let { DateHelper.formatDate(it) }
-                itemView.leadContentTextView.text = nonNullLead.question
+                    override fun onError(e: Exception) {
+                        displayDefaultImage(it)
+                    }
+
+                })
+            } else {
+                displayDefaultImage(it)
             }
+
+            itemView.leadUserNameTextView.text = it.firstLastName
+            itemView.leadTimeTextView.text = DateHelper.formatDate(it.createdAt)
+            itemView.leadContentTextView.text = it.question
         }
     }
 

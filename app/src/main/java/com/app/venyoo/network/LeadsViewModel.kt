@@ -35,9 +35,16 @@ class LeadsViewModel(private val api: VenyooApi, private val preferenceHelper: P
         sourceFactory.leadsDataSourceLiveData.value?.retry()
     }
 
+    fun refresh() {
+        sourceFactory.leadsDataSourceLiveData.value?.invalidate()
+    }
+
+
     fun getNetworkState(): LiveData<NetworkState> = Transformations.switchMap<LeadsDataSource, NetworkState>(
             sourceFactory.leadsDataSourceLiveData) { it.networkState }
 
+    fun getRefreshState(): LiveData<NetworkState> = Transformations.switchMap<LeadsDataSource, NetworkState>(
+            sourceFactory.leadsDataSourceLiveData) { it.initialLoad }
 
     override fun onCleared() {
         super.onCleared()

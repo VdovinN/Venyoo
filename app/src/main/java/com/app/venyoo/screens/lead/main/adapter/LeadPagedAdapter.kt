@@ -15,7 +15,7 @@ class LeadPagedAdater(private val retryCallback: () -> Unit) : PagedListAdapter<
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
-            R.layout.lead_item_layout -> (holder as LeadViewHolder).bind(getItem(position))
+            R.layout.lead_item_layout -> (holder as LeadViewHolder).bind(getItem(position), itemClicked)
             R.layout.item_network_state -> (holder as NetworkStateViewHolder).bindTo(networkState)
         }
     }
@@ -25,7 +25,7 @@ class LeadPagedAdater(private val retryCallback: () -> Unit) : PagedListAdapter<
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             R.layout.lead_item_layout -> LeadViewHolder.create(parent)
-            R.layout.lead_item_loading_layout -> NetworkStateViewHolder.create(parent, retryCallback)
+            R.layout.item_network_state -> NetworkStateViewHolder.create(parent, retryCallback)
             else -> throw IllegalStateException("unknown view type")
         }
     }
