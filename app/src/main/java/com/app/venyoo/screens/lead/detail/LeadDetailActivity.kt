@@ -156,31 +156,14 @@ class LeadDetailActivity : BaseActivity(), LeadDetailView {
             leadUserUrlTextView.text = lead.url
         }
 
-        lead.statuses?.let { statusList ->
-            {
-                val statusPairList = mutableListOf<Pair<String, String>>()
-                val orderedList = statusList.sortedBy { it.order }
-                for (status: Status in orderedList) {
-                    statusPairList.add(Pair(status.name, status.color))
-                }
-                leadUserStatusSpinner.adapter = LeadDetailSpinnerAdapter(this, statusPairList)
+        if (lead.statuses != null) {
+            val statusPairList = mutableListOf<Pair<String, String>>()
+            val orderedList = lead.statuses.sortedBy { it.order }
+            for (status: Status in orderedList) {
+                statusPairList.add(Pair(status.name, status.color))
             }
-
+            leadUserStatusSpinner.adapter = LeadDetailSpinnerAdapter(this, statusPairList)
         }
-
-        /*val statusPairList = listOf(
-                Pair("new", "Не обработан"),
-                Pair("connect_fail", "Не удалось связаться"),
-                Pair("help_question", "Справочный вопрос"),
-                Pair("spam", "Спам"),
-                Pair("not_interested", "Не заинтересован в услуге"),
-                Pair("deal", "Договорились о встрече"),
-                Pair("processed", "Обработан"),
-                Pair("send_mail", "Отправил письмо"),
-                Pair("got_mail", "Получил ответ на e-mail"),
-                Pair("open", "Открытый лид"),
-                Pair("in_progress", "В обработке"))*/
-
 
         leadUserSmsTextView.text = if (lead.sms == 0) getString(R.string.not_connected) else getString(R.string.connected)
 

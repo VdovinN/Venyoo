@@ -1,6 +1,10 @@
 package com.app.venyoo.screens.lead.detail.adapter
 
 import android.content.Context
+import android.graphics.Color
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,8 +66,14 @@ class LeadDetailSpinnerAdapter(context: Context?, var statusList: List<Pair<Stri
 
         fun bind(pair: Pair<String, String>) {
 
-            row.leadUserStatusTextView.text = pair.first
-
+            var colorString = pair.second
+            if (colorString.length == 4) {
+                colorString = "#${colorString[1]}${colorString[1]}${colorString[2]}${colorString[2]}${colorString[3]}${colorString[3]}"
+            }
+            val dot = SpannableString("\u25CF")
+            dot.setSpan(ForegroundColorSpan(Color.parseColor(colorString)), 0, dot.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            row.leadUserStatusTextView.text = dot
+            row.leadUserStatusTextView.append(" ${pair.first}")
         }
 
     }
